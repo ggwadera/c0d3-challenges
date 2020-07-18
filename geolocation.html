@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <title>IP Geolocation</title>
+    <style>
+      #map {
+        width: 100%;
+        height: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-lg">
+      <div class="jumbotron">
+        <h1 class="display-4">Challenge 1</h1>
+        <p class="lead">
+          IP Geolocation
+        </p>
+        <hr class="my-4" />
+        <p>
+          You are visiting from <span class="font-weight-bold">{cityStr}</span>
+        </p>
+      </div>
+
+      <hr class="my-4" />
+      <div id="map" class="rounded"></div>
+      <hr class="my-4" />
+
+      <p>The cities our visitors come from</p>
+      <ul class="list-group">
+        {visitors}
+      </ul>
+    </div>
+
+    <script>
+      // Initialize and add the map
+      function initMap() {
+        const coords = { {lat,lng} }
+        // The map, centered at the above coordinates
+        const map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 11,
+          center: coords,
+        })
+        // The marker, positioned at the above coordinates
+        const marker = new google.maps.Marker({ position: coords, map: map })
+      }
+    </script>
+    <!--Load the API from the specified URL
+            * The async attribute allows the browser to render the page while the API loads
+            * The key parameter will contain the API key
+            * The callback parameter executes the initMap() function
+            -->
+    <script
+      async
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB29pGpCzE_JGIEMLu1SGIqwoIbc0sHFHo&callback=initMap"
+    ></script>
+  </body>
+</html>
