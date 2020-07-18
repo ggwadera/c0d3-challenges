@@ -11,6 +11,7 @@ const visitorsRoute = (req, res) => {
   fetch(`https://js5.c0d3.com/location/api/ip/${ip}`)
     .then((response) => response.json())
     .then((body) => {
+      console.log(`Adding IP ${ip} from ${body.cityStr}`)
       visitors[ip] = body
       renderPage(req, res, body)
     })
@@ -49,6 +50,7 @@ const mock = () => {
     if (err) {
       return console.error("Error reading file", error)
     }
+    console.log('STARTING MOCK IP REQUESTS')
     const ips = data.split("\n")
     ips.forEach((ip) => {
       fetch(`https://js5.c0d3.com/location/api/ip/${ip}`)
@@ -60,6 +62,7 @@ const mock = () => {
           // renderPage(req, res, body)
         })
     })
+    console.log('ENDING MOCK IP REQUESTS\n')
   })
 }
 module.exports = {
