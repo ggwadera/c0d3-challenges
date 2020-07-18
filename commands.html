@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <title>Commands</title>
+  </head>
+  <body>
+    <div class="container-lg">
+      <div class="jumbotron">
+        <h1 class="display-4">Challenge 2</h1>
+        <p class="lead">
+          Commands
+        </p>
+        <hr class="my-4" />
+        <p>
+          Execute a command and see the response below. The command is executed
+          using a POST request to the server.
+        </p>
+        Valid commands:
+        <ul>
+          <li>cat</li>
+          <li>ls</li>
+          <li>pwd</li>
+        </ul>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text" id="basic-addon1">Command</span>
+        </div>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="ls, cat, pwd"
+          id="commandInput"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="runButton"
+          >
+            Run
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          Command Result
+        </div>
+        <div class="card-body" style="font-family: monospace;">
+          <pre id="commandResult"></pre>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const input = document.getElementById("commandInput")
+      const button = document.getElementById("runButton")
+      const divResult = document.getElementById("commandResult")
+
+      const run = () => {
+        const value = input.value.trim()
+        fetch(`/commands`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            command: value,
+          }),
+        })
+          .then((response) => response.json())
+          .then((body) => {
+            divResult.innerText = body.output
+            input.value = ""
+          })
+      }
+
+      input.addEventListener("keyup", (e) => {
+        if (e.key === "Enter") {
+          run()
+        }
+      })
+
+      button.addEventListener("click", () => run())
+
+      input.focus()
+    </script>
+  </body>
+</html>
