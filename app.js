@@ -1,6 +1,6 @@
 const express = require("express")
-const geolocation = require("./geolocation")
-const commands = require("./commands")
+const geolocation = require("./1/geolocation")
+const commands = require("./2/commands")
 
 const app = express()
 app.use(express.static("public"))
@@ -18,10 +18,11 @@ app.get("/visitors", (req, res) => {
 app.get("/api/visitors", (req, res) => {
   geolocation.findAll(req, res)
 })
+geolocation.mock()
 
 // 2. COMMANDS
 app.get("/commands", (req, res) => {
-  res.sendFile(__dirname + "/commands.html")
+  res.sendFile(__dirname + "/2/commands.html")
 })
 
 app.post('/commands', (req, res) => {

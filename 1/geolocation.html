@@ -33,7 +33,10 @@
         </p>
         <hr class="my-4" />
         <p>
-          You are visiting from <span class="font-weight-bold">{cityStr}</span>
+          You are visiting from <span class="font-weight-bold">{cityStr}</span>.
+        </p>
+        <p>
+          Your public IP is <span class="font-weight-bold">{ip}</span>.
         </p>
       </div>
 
@@ -41,10 +44,21 @@
       <div id="map" class="rounded"></div>
       <hr class="my-4" />
 
-      <p>The cities our visitors come from</p>
-      <ul class="list-group">
+      <p>The cities our visitors come from:</p>
+      <table class="table table-striped">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">City</th>
+            <th scope="col"># of Visits</th>
+          </tr>
+        </thead>
+        <tbody>
+          {visitors}
+        </tbody>
+      </table>
+      <!-- <ul class="list-group">
         {visitors}
-      </ul>
+      </ul> -->
     </div>
 
     <script>

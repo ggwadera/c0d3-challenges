@@ -4,7 +4,7 @@
   "description": "",
   "main": "deploy.config.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "nodemon app.js",
     "start:myproxy": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,5 +18,8 @@
   "dependencies": {
     "express": "^4.17.1",
     "node-fetch": "^2.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
