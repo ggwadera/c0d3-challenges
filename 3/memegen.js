@@ -28,7 +28,7 @@ const genMeme = async (req, res) => {
 
   try {
     const image = cache[src] ? cache[src].image : await Jimp.read(src)
-    console.log('memegen', src)
+    console.log(`memegem: src="${src}"; text="${text}"; blur="${blur}"; black="${black}"`)
     const mime = image.getMIME()
     cacheImage(src, image)
 
