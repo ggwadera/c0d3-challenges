@@ -1,6 +1,7 @@
 const express = require("express")
 const geolocation = require("./1/geolocation")
 const commands = require("./2/commands")
+const memegen = require('./3/memegen')
 
 const app = express()
 app.use(express.static("public"))
@@ -18,7 +19,7 @@ app.get("/visitors", (req, res) => {
 app.get("/api/visitors", (req, res) => {
   geolocation.findAll(req, res)
 })
-geolocation.mock()
+// geolocation.mock()
 
 // 2. COMMANDS
 app.get("/commands", (req, res) => {
@@ -27,6 +28,11 @@ app.get("/commands", (req, res) => {
 
 app.post('/commands', (req, res) => {
   commands.runCommand(req, res)
+})
+
+// 3. Meme Gen
+app.get("/memegen/api/:text", (req, res) => {
+  memegen.genMeme(req, res)
 })
 
 app.listen(process.env.PORT || 8123)
