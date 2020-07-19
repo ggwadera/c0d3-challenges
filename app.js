@@ -19,7 +19,7 @@ app.get("/visitors", (req, res) => {
 app.get("/api/visitors", (req, res) => {
   geolocation.findAll(req, res)
 })
-// geolocation.mock()
+geolocation.mock()
 
 // 2. COMMANDS
 app.get("/commands", (req, res) => {
