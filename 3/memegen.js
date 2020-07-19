@@ -28,8 +28,8 @@ const genMeme = async (req, res) => {
 
   try {
     const image = cache[src] ? cache[src].image : await Jimp.read(src)
-    console.log(`memegem: src="${src}"; text="${text}"; blur="${blur}"; black="${black}"`)
-    const mime = image.getMIME()
+    const mime = image.getMIME() || Jimp.MIME_JPEG // defaults to "image/jpeg" if cannot get MIME
+    console.log(`memegem: src="${src}"; text="${text}"; blur="${blur}"; black="${black}"; mime="${mime}"`)
     cacheImage(src, image)
 
     if (blur > 0) {
@@ -42,6 +42,7 @@ const genMeme = async (req, res) => {
       res.send(buffer)
     })
   } catch (e) {
+    console.log(`memegen: Error processing image from src="${src}"\n${e}`)
     res.send("Error while processing the requested image.<br>" + e)
   }
 }
