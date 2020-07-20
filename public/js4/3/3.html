@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Fair</title>
+    <style>
+      .small {
+        margin: auto;
+        width: 421px;
+        height: 168px;
+        cursor: none;
+      }
+
+      .scope {
+        display: none;
+        position: fixed;
+        background-image: url(https://c0d3.com/challenges/assets/fair/big.jpg);
+        width: 200px;
+        height: 200px;
+        clip-path: circle(48%);
+        overflow: hidden;
+        pointer-events: none;
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="small">
+        <img src="https://c0d3.com/challenges/assets/fair/small.jpg" />
+      </div>
+      <div class="scope">
+        <img src="https://c0d3.com/challenges/assets/fair/scope.png" />
+      </div>
+    </div>
+
+    <script>
+      const smallImage = document.querySelector(".small")
+      const scope = document.querySelector(".scope")
+  
+      const widthRatio = 1263 / 421
+      const heightRatio = 503 / 168
+  
+      smallImage.addEventListener('mouseenter', () => {
+        scope.style.display = 'block'
+      })
+  
+      smallImage.addEventListener('mouseleave', () => {
+        scope.style.display = 'none'
+      })
+  
+      smallImage.addEventListener("mousemove", (e) => {
+        scope.style.top = `${e.clientY - 100}px`
+        scope.style.left = `${e.clientX - 100}px`
+        scope.style.backgroundPosition = `${-widthRatio * e.offsetX + 100}px ${-heightRatio * e.offsetY + 100}px`
+      })
+    </script>
+  </body>
+</html>

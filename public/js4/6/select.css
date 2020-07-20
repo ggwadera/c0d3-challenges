@@ -1,0 +1,39 @@
+:root {
+  --block-size: 50px;
+  --block-margin: 2px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  width: 100px;
+  line-height: 0px;
+}
+
+.block {
+  box-sizing: border-box;
+  display: inline-block;
+  background-color: #aaa;
+  border: 1px solid black;
+  width: var(--block-size);
+  height: var(--block-size);
+  margin: var(--block-margin);
+  z-index: -1;
+}
+
+.block.on {
+  background-color: #afa;
+}
+
+.selection {
+  position: absolute;
+  display: none;
+  background-color: rgba(0, 0, 0, 0.7);
+  z-index: 1;
+}

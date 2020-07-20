@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kanban Board</title>
+    <link rel="stylesheet" href="kanban.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="header" style="background-color: #35235d;">To-Do</div>
+      <div class="input">
+        <textarea rows="3"></textarea>
+        <button>Submit</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="header" style="background-color: #cb2402;">Doing</div>
+      <div class="input">
+        <textarea rows="3"></textarea>
+        <button>Submit</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="header" style="background-color: #4c49a2;">Done</div>
+      <div class="input">
+        <textarea rows="3"></textarea>
+        <button>Submit</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="header" style="background-color: #a31a48;">Approved</div>
+      <div class="input">
+        <textarea rows="3"></textarea>
+        <button>Submit</button>
+      </div>
+    </div>
+
+    <div class="undo">
+      <button onclick="undo()">UNDO</button>
+    </div>
+    <script src="kanban.js"></script>
+  </body>
+</html>

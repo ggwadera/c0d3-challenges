@@ -1,7 +1,7 @@
 const express = require("express")
-const geolocation = require("./1/geolocation")
-const commands = require("./2/commands")
-const memegen = require('./3/memegen')
+const geolocation = require("./js5/1/geolocation")
+const commands = require("./js5/2/commands")
+const memegen = require('./js5/3/memegen')
 
 const app = express()
 app.use(express.static("public"))
@@ -23,7 +23,7 @@ geolocation.mock()
 
 // 2. COMMANDS
 app.get("/commands", (req, res) => {
-  res.sendFile(__dirname + "/2/commands.html")
+  res.sendFile(__dirname + "/js5/2/commands.html")
 })
 
 app.post('/commands', (req, res) => {

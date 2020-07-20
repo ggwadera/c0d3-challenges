@@ -8,25 +8,58 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootswatch Darkly CSS -->
     <link
       rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css"
+      integrity="sha384-Bo21yfmmZuXwcN/9vKrA5jPUMhr7znVBBeLxT9MA4r2BchhusfJ6+n8TLGUcRAtL"
       crossorigin="anonymous"
     />
 
     <title>Hello, world!</title>
   </head>
   <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarColor01"
+        aria-controls="navbarColor01"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.html"
+              >Home <span class="sr-only">(current)</span></a
+            >
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="js4.html">JS4</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="js5.html">JS5</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="https://www.c0d3.com/">c0d3</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
     <div class="container-lg">
       <div class="jumbotron">
         <h1 class="display-4">Hello, world!</h1>
         <p class="lead">
           This is my <a href="https://freedomains.dev/">freedomains.dev</a> page
           to host my solutions for the
-          <a href="https://www.c0d3.com/curriculum/3">JS5 Challenges</a> from
-          <a href="https://www.c0d3.com/">C0D3</a>.
+          <a href="https://www.c0d3.com/">C0D3</a> curriculum challenges.
         </p>
         <hr class="my-4" />
         <p>
@@ -36,157 +69,64 @@
           Contact: @ggwadera in
           <a href="https://chat.c0d3.com/">chat.c0d3.com</a>.
         </p>
+        <p>
+          Developed with <a href="https://getbootstrap.com/">Bootstrap</a> and
+          <a href="https://bootswatch.com/darkly/">Bootswatch Darkly</a>.
+        </p>
       </div>
 
       <div class="row justify-content-between">
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
+        <div class="col d-flex align-items-stretch mb-3">
           <div class="card flex-fill">
             <div class="card-body">
-              <h5 class="card-title">Challenge 1</h5>
-              <h6 class="card-subtitle mb-2 text-muted">IP Geolocation</h6>
-              <p class="card-text">
-                Code an API route to show a map with a geolocation using the
-                request IP.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="/visitors" class="btn btn-primary">Check it out!</a>
-              <a href="/api/visitors" class="btn btn-secondary">API Link</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
-          <div class="card flex-fill">
-            <div class="card-body">
-              <h5 class="card-title">Challenge 2</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Commands</h6>
-              <p class="card-text">
-                Create a route that takes in an input box that lets you execute
-                commands directly on your server.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="/commands" class="btn btn-primary">Check it out!</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
-          <div class="card flex-fill">
-            <div class="card-body">
-              <h5 class="card-title">Challenge 3</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Meme Gen</h6>
-              <p class="card-text">
-                Create a url that generates an image meme.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a
-                href="/memegen/api/great%20job?blur=4&black=true&src=https://placeimg.com/640/480/any"
-                class="btn btn-primary"
-                >Check it out!</a
-              >
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
-          <div class="card flex-fill">
-            <div class="card-body">
-              <h5 class="card-title">Challenge 4</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Asset Creation</h6>
-              <p class="card-text">
-                Build APIs for powering the text editing site.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-danger">In development</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
-          <div class="card flex-fill">
-            <div class="card-body">
-              <h5 class="card-title">Challenge 5</h5>
+              <h5 class="card-title">JS4 Challenges</h5>
               <h6 class="card-subtitle mb-2 text-muted">
-                Chatroom using JWT Auth
+                Frontend Engineering
               </h6>
               <p class="card-text">
-                Build a chatroom using third-party authentication.
+                My solutions for the challenges from
+                <a href="https://www.c0d3.com/curriculum/24"
+                  >JS4 - Frontend Engineering</a
+                >
+                using HTML, CSS and JS.
               </p>
             </div>
             <div class="card-footer">
-              <a href="#" class="btn btn-danger">In development</a>
+              <a href="js4.html" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
         </div>
 
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
+        <div class="col d-flex align-items-stretch mb-3">
           <div class="card flex-fill">
             <div class="card-body">
-              <h5 class="card-title">Challenge 6</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Authentication</h6>
+              <h5 class="card-title">JS5 Challenges</h5>
+              <h6 class="card-subtitle mb-2 text-muted">End to End</h6>
               <p class="card-text">
-                Build your own backend for authentication.
+                My solutions for the challenges from
+                <a href="https://www.c0d3.com/curriculum/3">JS5 - End to End</a>
+                using HTML, CSS and JS (with <code>node</code> and
+                <code
+                  ><a href="https://www.npmjs.com/package/express"
+                    >express</a
+                  ></code
+                >).
               </p>
             </div>
             <div class="card-footer">
-              <a href="#" class="btn btn-danger">In development</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
-          <div class="card flex-fill">
-            <div class="card-body">
-              <h5 class="card-title">Challenge 7</h5>
-              <h6 class="card-subtitle mb-2 text-muted">
-                Image Text Extraction
-              </h6>
-              <p class="card-text">
-                Build a OCR API for text recognition in images using Tesseract.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-danger">In development</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
-          <div class="card flex-fill">
-            <div class="card-body">
-              <h5 class="card-title">Challenge 8</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Selfie Queen</h6>
-              <p class="card-text">
-                Build an application where users can go to your website and take
-                a picture.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-danger">In development</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 d-flex align-items-stretch mb-3">
-          <div class="card flex-fill">
-            <div class="card-body">
-              <h5 class="card-title">Challenge 9</h5>
-              <h6 class="card-subtitle mb-2 text-muted">Create a MemeChat</h6>
-              <p class="card-text">
-                Final Project: Complete a chatroom.
-              </p>
-            </div>
-            <div class="card-footer">
-              <a href="#" class="btn btn-danger">In development</a>
+              <a href="js5.html" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <nav class="navbar fixed-bottom navbar-dark bg-dark">
+      <span class="navbar-text">
+        Developed with <a href="https://getbootstrap.com/">Bootstrap</a> and
+        <a href="https://bootswatch.com/darkly/">Bootswatch Darkly</a>.
+      </span>
+    </nav>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

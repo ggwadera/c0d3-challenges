@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lights Off</title>
+    <style>
+      .container {
+        width: 100px;
+        line-height: 0px;
+      }
+
+      .block {
+        box-sizing: border-box;
+        display: inline-block;
+        background-color: #aaa;
+        border: 1px solid black;
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+      }
+
+      .block.on {
+        background-color: #afa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container"></div>
+
+    <script>
+      const container = document.querySelector(".container")
+      const directions = [
+        [-1, 0],
+        [1, 0],
+        [0, 0],
+        [0, -1],
+        [0, 1],
+      ]
+      let gridSize = 2
+      let blocks = []
+
+      // get random number in the range [0, gridSize)
+      const getRandom = () => {
+        return Math.floor(Math.random() * gridSize ** 2)
+      }
+
+      // Block class
+      function Block(row, column) {
+        this.row = row
+        this.column = column
+        this.isOn = false
+
+        // add block element to the container
+        const element = document.createElement("div")
+        element.classList.add("block")
+        container.append(element)
+
+        // toggle this block status
+        this.toggle = () => {
+          element.classList.toggle("on")
+          this.isOn = !this.isOn
+        }
+
+        // toggle the blocks around this
+        const toggleNeighbors = () => {
+          directions.forEach((direction) => {
+            const row = this.row + direction[0]
+            const col = this.column + direction[1]
+            if (col >= 0 && col < gridSize) {
+              if (row >= 0 && row < gridSize) {
+                blocks[row * gridSize + col].toggle()
+              }
+            }
+          })
+        }
+
+        // add click functionality
+        element.addEventListener("click", () => {
+          if (this.isOn) {
+            toggleNeighbors()
+            if (isGameOver()) {
+              createGame()
+            }
+          }
+        })
+      }
+
+      // create the grid and the blocks array
+      const createGrid = () => {
+        blocks = [...Array(gridSize ** 2).keys()].map((e) => {
+          const row = Math.floor(e / gridSize)
+          const col = e % gridSize
+          return new Block(row, col)
+        })
+      }
+
+      // start the game
+      const createGame = () => {
+        if (blocks.length !== 0) {
+          gridSize = parseInt(
+            prompt(
+              "You won! Play again with different size? 0 to stop playing."
+            )
+          )
+          if (gridSize === 0) return
+          container.innerHTML = ""
+        }
+        container.style.width = `${50 * gridSize}px`
+        createGrid()
+        blocks[getRandom()].toggle()
+      }
+
+      // check if all block are off to end the game
+      const isGameOver = () => {
+        return blocks.find((block) => block.isOn) === undefined
+      }
+
+      createGame() //start
+    </script>
+  </body>
+</html>

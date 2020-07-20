@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css"
+      integrity="sha512-xA6Hp6oezhjd6LiLZynuukm80f8BoZ3OpcEYaqKoCV3HKQDrYjDE1Gu8ocxgxoXmwmSzM4iqPvCsOkQNiu41GA=="
+      crossorigin="anonymous"
+    />
+    <title>Stars UI</title>
+    <style>
+      p {
+        font-family: sans-serif;
+      }
+
+      .stars-container {
+        font-size: 30px;
+      }
+
+      .stars-container > .fas {
+        -webkit-text-stroke-width: 3px;
+        -webkit-text-stroke-color: black;
+        color: yellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="stars-container"></div>
+    <p class="text">You are giving 0 Stars!</p>
+  </body>
+  <script>
+    const container = document.querySelector(".stars-container")
+    const text = document.querySelector(".text")
+
+    // Star class
+    function Star(rating) {
+      this.rating = rating
+
+      // add this star element to the container
+      this.element = document.createElement("i")
+      this.element.classList.add("far", "fa-star")
+      container.append(this.element)
+
+      // add hover functionality to highlight the stars up to this one
+      this.element.addEventListener("mouseenter", () => {
+        text.innerText = `You are giving ${this.rating} Stars!`
+        stars.forEach((star) => {
+          if (star.rating <= this.rating) {
+            star.element.classList.remove("far")
+            star.element.classList.add("fas")
+          } else {
+            star.element.classList.remove("fas")
+            star.element.classList.add("far")
+          }
+        })
+      })
+
+      // add click functionality to change the text below the stars
+      this.element.addEventListener("click", () => {
+        text.innerText = `You have given ${this.rating} Stars!`
+      })
+    }
+
+    // create the array of stars
+    const stars = [1, 2, 3, 4, 5].map((rating) => new Star(rating))
+  </script>
+</html>

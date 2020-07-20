@@ -1,0 +1,37 @@
+:root {
+  --block-size: 50px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.container {
+  width: 500px;
+  line-height: 0px;
+}
+
+.block {
+  box-sizing: border-box;
+  display: inline-block;
+  background-color: #eee;
+  border: 1px solid black;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  text-align: center;
+  vertical-align: top;
+  padding-top: 20px;
+}
+
+.block.selected {
+  background-color: #aaa;
+}
+
+.block.marked {
+  background-color: #f00;
+}
