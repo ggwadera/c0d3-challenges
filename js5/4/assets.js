@@ -45,6 +45,7 @@ const deleteOldFiles = () => {
 
 const initialize = () => {
   fs.readdir(path, (err, data) => {
+    if (!data) return
     data.forEach((file) => {
       fs.stat(path + file, (err, stats) => {
         files[file] = stats.mtimeMs
