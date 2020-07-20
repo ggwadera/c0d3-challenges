@@ -52,7 +52,7 @@ const initialize = () => {
       })
     })
   })
-  setInterval(deleteOldFiles, 1000 * 60) // checks every minute
+  setInterval(deleteOldFiles, 1000 * 60 * 5) // checks every 5 minutes
 }
 
 module.exports = {
