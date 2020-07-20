@@ -1,0 +1,1 @@
+This repository is a mirror of the files on https://ggwdr.freedomains.dev/, where I host my solutions for the challenges on [c0d3](https://www.c0d3.com/).
