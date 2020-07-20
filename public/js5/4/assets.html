@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootswatch Darkly CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css"
+      integrity="sha384-Bo21yfmmZuXwcN/9vKrA5jPUMhr7znVBBeLxT9MA4r2BchhusfJ6+n8TLGUcRAtL"
+      crossorigin="anonymous"
+    />
+
+    <title>Assets</title>
+
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="input-group mt-3 mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="File Name"
+          id="filenameInput"
+        />
+        <div class="input-group-append">
+          <button class="btn btn-primary" type="button" id="createButton">
+            Create File
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3">
+          <ul id="files" class="list-group"></ul>
+        </div>
+
+        <div class="input-group col">
+          <textarea
+            id="editor"
+            class="form-control text-monospace"
+            rows="20"
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const fileList = document.getElementById("files")
+      const editor = document.getElementById("editor")
+      const filenameInput = document.getElementById("filenameInput")
+      const createButton = document.getElementById("createButton")
+
+      let files = null
+
+      function File(name, content = null) {
+        this.name = name
+        this.content = content // cache file contents
+
+        const element = document.createElement("li")
+        element.classList.add("list-group-item", "list-group-item-action")
+        element.innerText = this.name
+        element.style.cursor = "pointer"
+        fileList.append(element)
+
+        element.addEventListener("click", () => {
+          if (this.content === null) {
+            fetch(`/api/files/${this.name}`)
+              .then((r) => r.json())
+              .then((content) => {
+                this.content = content
+                editor.value = this.content
+              })
+          } else {
+            editor.value = this.content
+          }
+          filenameInput.value = this.name
+        })
+      }
+
+      const populateFiles = () => {
+        fetch("/api/files")
+          .then((r) => r.json())
+          .then((f) => {
+            files = f.reduce((acc, file) => {
+              acc[file] = new File(file)
+              return acc
+            }, {})
+          })
+      }
+
+      createButton.addEventListener("click", () => {
+        const filename = filenameInput.value
+        const content = editor.value
+
+        fetch("/api/files", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            filename: filename,
+            content: content,
+          }),
+        }).then((r) => {
+          if (r.status === 201) {
+            if (!files[filename]) {
+              files[filename] = new File(filename, content)
+            } else {
+              files[filename].content = content
+            }
+          } else {
+            alert("Failed to create or edit file.")
+          }
+        })
+      })
+
+      populateFiles()
+      editor.value = ""
+      filenameInput.value = ""
+    </script>
+  </body>
+</html>
