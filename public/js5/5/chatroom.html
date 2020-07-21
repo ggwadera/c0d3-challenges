@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootswatch Darkly CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css"
+      integrity="sha384-Bo21yfmmZuXwcN/9vKrA5jPUMhr7znVBBeLxT9MA4r2BchhusfJ6+n8TLGUcRAtL"
+      crossorigin="anonymous"
+    />
+
+    <title>Chatroom</title>
+  </head>
+  <body>
+    <main class="app-container"></main>
+
+    <script>
+      const $appContainer = document.querySelector(".app-container")
+      let jwt = localStorage.getItem("userjwt")
+
+      const renderSelection = () => {
+        $appContainer.innerHTML = `
+        <div class="container d-flex min-vh-100">
+          <div class="card my-auto mx-auto">
+            <div class="card-header font-weight-bold">
+              Enter a Room
+            </div>
+            <div class="card-body" style="width: 25rem;">
+              <div class="form-group">
+                <label for="room">Room Name</label>
+                <input type="text" class="form-control" id="room" />
+              </div>
+              <button class="btn btn-primary btn-lg btn-block" id="submit">
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+  `
+        const $roomname = document.getElementById("room")
+        const $submit = document.getElementById("submit")
+        $submit.addEventListener("click", () => {
+          const name = $roomname.value
+          window.location = `/chatroom/${name}`
+        })
+      }
+
+      const renderRoom = (roomName) => {
+        $appContainer.innerHTML = `
+        <div class="container-lg">
+          <div class="card mt-5">
+            <div class="card-header">Chatroom ${roomName}</div>
+            <div class="card-body">
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Message</span>
+                </div>
+                <input type="text" class="form-control" id="newmessage" />
+                <div class="input-group-append">
+                  <button class="btn btn-secondary" type="button" id="send">
+                    Send
+                  </button>
+                </div>
+              </div>
+
+              <ul class="list-group list-group-flush" id="messages"></ul>
+            </div>
+          </div>
+        </div>
+  `
+        const $message = document.getElementById("newmessage")
+        const $container = document.getElementById("messages")
+        $message.focus()
+
+        const sendMessage = () => {
+          const value = $message.value
+          fetch(`/chatroom/api/${roomName}/messages`, {
+            method: "POST",
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+            body: JSON.stringify({
+              message: value,
+            }),
+          }).then(() => {
+            $message.value = ""
+          })
+        }
+        const getMessage = () => {
+          fetch(`/chatroom/api/${roomName}/messages`, {
+            headers: {
+              Authorization: `Bearer ${jwt}`,
+            },
+          })
+            .then((r) => r.json())
+            .then((data) => {
+              $container.innerHTML = data.reduce((acc, e) => {
+                return `${acc}
+              <li class="list-group-item">
+                <span class="font-weight-bold mr-2">${e.name}</span> ${e.message}
+              </li>`
+              }, "")
+            })
+        }
+
+        $message.addEventListener("keyup", (e) => {
+          if (e.key === "Enter") {
+            return sendMessage()
+          }
+        })
+        document.getElementById("send").addEventListener("click", () => {
+          sendMessage()
+        })
+        
+        getMessage()
+        setInterval(getMessage, 1000)
+      }
+
+      const render = () => {
+        const room = window.location.pathname.split("/")[2]
+        if (!room) {
+          return renderSelection()
+        }
+        return renderRoom(room)
+      }
+
+      const setupSignup = () => {
+        $appContainer.innerHTML = `
+<div class="container d-flex min-vh-100">
+    <div class="card my-auto mx-auto">
+        <div class="card-header">
+            Create New Account
+        </div>
+        <div class="card-body" style="width: 25rem;">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" />
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" />
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" />
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" id="submit">
+                Submit
+            </button>
+            <button class="btn btn-secondary btn-lg btn-block mt-1" id="login">
+                Login
+            </button>
+        </div>
+    </div>
+</div>
+  `
+        const $name = document.getElementById("name")
+        const $username = document.getElementById("username")
+        const $email = document.getElementById("email")
+        const $password = document.getElementById("password")
+        const $submit = document.getElementById("submit")
+        const $login = document.getElementById("login")
+        $login.addEventListener("click", () => {
+          setupLogin()
+        })
+        $submit.addEventListener("click", () => {
+          // signup button click
+          fetch("https://js5.c0d3.com/auth/api/users", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              username: $username.value,
+              email: $email.value,
+              name: $name.value,
+              password: btoa($password.value),
+            }),
+          })
+            .then((response) => response.json())
+            .then((body) => {
+              if (body.jwt && body.username) {
+                jwt = body.jwt
+                localStorage.setItem("userjwt", jwt)
+                render()
+              }
+            })
+        })
+      }
+
+      const setupLogin = () => {
+        $appContainer.innerHTML = `
+    <div class="container d-flex min-vh-100">
+        <div class="card my-auto mx-auto">
+            <div class="card-header">
+                Login
+            </div>
+            <div class="card-body" style="width: 25rem;">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" class="form-control" id="username" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control" id="password" />
+                </div>
+                <button class="btn btn-primary btn-lg btn-block" id="submit">
+                    Submit
+                </button>
+                <button class="btn btn-secondary btn-lg btn-block mt-1" id="newacc">
+                    Create Account
+                </button>
+            </div>
+        </div>
+    </div>
+  `
+        const $username = document.getElementById("username")
+        const $password = document.getElementById("password")
+        const $submit = document.getElementById("submit")
+        const $create = document.getElementById("newacc")
+        $create.addEventListener("click", () => {
+          setupSignup()
+        })
+        $submit.addEventListener("click", () => {
+          // Login button click
+          fetch("https://js5.c0d3.com/auth/api/sessions", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "content-type": "application/json",
+            },
+            body: JSON.stringify({
+              username: $username.value,
+              password: btoa($password.value),
+            }),
+          })
+            .then((response) => response.json())
+            .then((body) => {
+              if (body.jwt) {
+                jwt = body.jwt
+                localStorage.setItem("userjwt", jwt)
+                render()
+              }
+            })
+        })
+      }
+
+      const startApp = () => {
+        fetch("/chatroom/api/session", {
+          headers: {
+            Authorization: `Bearer ${jwt}`,
+          },
+        })
+          .then((r) => r.json())
+          .then((body) => render())
+          .catch((rej) => setupLogin())
+      }
+      startApp()
+    </script>
+  </body>
+</html>
