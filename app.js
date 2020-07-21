@@ -1,5 +1,4 @@
 const express = require("express")
-const session = require("express-session")
 const geolocation = require("./js5/1/geolocation")
 const commands = require("./js5/2/commands")
 const memegen = require("./js5/3/memegen")
