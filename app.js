@@ -4,6 +4,7 @@ const commands = require("./js5/2/commands")
 const memegen = require("./js5/3/memegen")
 const assets = require("./js5/4/assets")
 const chatroom = require("./js5/5/chatroom")
+const auth = require('./js5/6/jwt_auth')
 
 const app = express()
 app.use(express.static("public"))
@@ -66,6 +67,23 @@ app.get("/chatroom/api/:room/messages", (req, res) => {
 
 app.post("/chatroom/api/:room/messages", (req, res) => {
   chatroom.postMessage(req, res)
+})
+
+// 6. Authentication
+app.get('/auth', (req, res) => {
+  res.sendFile(__dirname + '/public/js5/6/auth.html')
+})
+
+app.post('/auth/api/users', (req, res) => {
+  auth.postUser(req, res)
+})
+
+app.post('/auth/api/session', (req, res) => {
+  auth.postSession(req, res)
+})
+
+app.get('/auth/api/session', (req, res) => {
+  auth.getSession(req, res)
 })
 
 app.listen(process.env.PORT || 8123)
