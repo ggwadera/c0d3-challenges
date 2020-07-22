@@ -29,13 +29,13 @@ const getSession = (req, res) => {
   if (!req.body.username) {
     return res.sendStatus(403)
   }
-  console.log(`${new Date().toString()} chatroom: user ${req.body.username} login`)
   res.json(req.body)
 }
 
 const getMessages = (req, res) => {
   const room = req.params.room
   if (!rooms[room]) {
+    console.log(`${new Date().toString()} chatroom: creating room ${room}`)
     rooms[room] = []
   }
   return res.json(rooms[room])
@@ -44,7 +44,6 @@ const getMessages = (req, res) => {
 const postMessage = (req, res) => {
   const room = req.params.room
   if (!rooms[room]) {
-    console.log(`${new Date().toString()} chatroom: creating room ${room}`)
     rooms[room] = []
   }
   rooms[room].push(new Message(req.body.name, req.body.message))
