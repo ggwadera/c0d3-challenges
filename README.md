@@ -20,3 +20,5 @@ npm install
 ```sh
 npm run start
 ```
+
+4. Open in your browser: http://localhost:8123
