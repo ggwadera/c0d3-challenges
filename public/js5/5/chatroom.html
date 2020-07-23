@@ -55,7 +55,7 @@
         </ul>
       </div>
     </nav>
-    
+
     <main class="app-container"></main>
 
     <script>
@@ -140,6 +140,7 @@
             $message.value = ""
           })
         }
+
         const getMessage = () => {
           fetch(`/chatroom/api/${roomName}/messages`, {
             headers: {
@@ -154,6 +155,7 @@
                 <span class="font-weight-bold mr-2">${e.name}</span> ${e.message}
               </li>`
               }, "")
+              setTimeout(getMessage, 1000)
             })
         }
 
@@ -162,12 +164,12 @@
             return sendMessage()
           }
         })
+
         document.getElementById("send").addEventListener("click", () => {
           sendMessage()
         })
 
         getMessage()
-        setInterval(getMessage, 1000)
       }
 
       const render = () => {
@@ -311,8 +313,12 @@
           },
         })
           .then((r) => r.json())
-          .then((body) => render())
-          .catch((rej) => setupLogin())
+          .then((body) => {
+            if (body.error) {
+              return setupLogin()
+            }
+            render()
+          })
       }
       startApp()
     </script>

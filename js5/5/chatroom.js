@@ -17,17 +17,20 @@ const getUserMiddleware = (req, res, next) => {
     .then((r) => r.json())
     .then((body) => {
       if (!body.error) {
-        req.body.name = body.name
-        req.body.username = body.username
-        req.body.password = body.password
+        // store user info in the request
+        req.user = {
+          name: body.name,
+          username: body.username,
+          password: body.password,
+        }
       }
       next()
     })
 }
 
 const getSession = (req, res) => {
-  if (!req.body.username) {
-    return res.sendStatus(403)
+  if (!req.user) {
+    return res.status(403).json({error: "Invalid session"})
   }
   res.json(req.body)
 }
@@ -46,8 +49,8 @@ const postMessage = (req, res) => {
   if (!rooms[room]) {
     rooms[room] = []
   }
-  rooms[room].push(new Message(req.body.name, req.body.message))
-  console.log(`${new Date().toString()} chatroom: new message in room ${room}`)
+  rooms[room].push(new Message(req.user.name, req.body.message))
+  console.log(`${new Date().toString()} chatroom: new message in room ${room} from ${req.user.name}`)
   res.sendStatus(201)
 }
 
