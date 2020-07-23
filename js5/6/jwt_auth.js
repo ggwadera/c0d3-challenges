@@ -12,23 +12,6 @@ const usersById = {}
 const usersByUsername = {}
 const usersByEmail = {}
 
-const User = function (data) {
-  Object.entries(data).forEach(([key, value]) => {
-    this[key] = value
-  })
-  console.log(`${new Date().toString()} auth: new user ${this.username}`)
-
-  this.checkPassword = (password, res) => {
-    bcrypt.compare(password, this.password).then((match) => {
-      if (!match) {
-        return res.status(400).json({ error: "Invalid password" })
-      }
-      console.log(`${new Date().toString()} auth: user ${this.username} login`)
-      return res.json({ jwt: this.token })
-    })
-  }
-}
-
 const postUser = (req, res) => {
   const data = req.body
   const username = data.username
@@ -70,7 +53,11 @@ const postUser = (req, res) => {
       data.password = hash
       data.id = uuidv4()
       data.token = jwt.sign({ id: data.id }, jwtSecret)
-      const user = new User(data)
+      const user = Object.entries(data).reduce((acc, [key, value]) => {
+        acc[key] = value
+        return acc
+      }, {})
+      console.log(`${new Date().toString()} auth: new user ${user.username}`)
       usersById[user.id] = user
       usersByUsername[user.username] = user
       usersByEmail[user.email] = user
@@ -84,11 +71,19 @@ const postUser = (req, res) => {
 const postSession = (req, res) => {
   const username = req.body.username
   const password = req.body.password
+  const user = usersByUsername[username]
 
-  if (!usersByUsername[username]) {
+  if (!user) {
     return res.status(400).json({ error: "Username does not exist." })
   }
-  usersByUsername[username].checkPassword(password, res)
+
+  bcrypt.compare(password, user.password).then((match) => {
+    if (!match) {
+      return res.status(400).json({ error: "Invalid password" })
+    }
+    console.log(`${new Date().toString()} auth: user ${user.username} login`)
+    return res.json({ jwt: user.token })
+  })
 }
 
 const getSession = (req, res) => {
