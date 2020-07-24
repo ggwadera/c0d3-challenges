@@ -1,12 +1,17 @@
 const express = require("express")
+const multer = require("multer")
+
 const geolocation = require("./js5/1/geolocation")
 const commands = require("./js5/2/commands")
 const memegen = require("./js5/3/memegen")
 const assets = require("./js5/4/assets")
 const chatroom = require("./js5/5/chatroom")
-const auth = require('./js5/6/jwt_auth')
+const auth = require("./js5/6/jwt_auth")
+const ocr = require("./js5/7/ocr")
 
 const app = express()
+const upload = multer({ dest: "public/files/" })
+
 app.use(express.static("public"))
 app.use(express.json())
 
@@ -70,20 +75,33 @@ app.post("/chatroom/api/:room/messages", (req, res) => {
 })
 
 // 6. Authentication
-app.get('/auth', (req, res) => {
-  res.sendFile(__dirname + '/public/js5/6/auth.html')
+app.get("/auth", (req, res) => {
+  res.sendFile(__dirname + "/public/js5/6/auth.html")
 })
 
-app.post('/auth/api/users', (req, res) => {
+app.post("/auth/api/users", (req, res) => {
   auth.postUser(req, res)
 })
 
-app.post('/auth/api/session', (req, res) => {
+app.post("/auth/api/session", (req, res) => {
   auth.postSession(req, res)
 })
 
-app.get('/auth/api/session', (req, res) => {
+app.get("/auth/api/session", (req, res) => {
   auth.getSession(req, res)
+})
+
+// 7. Image Text Extraction
+app.post("/ocr/files", upload.single("userFile"), (req, res) => {
+  ocr.postJob(req, res)
+})
+
+app.get("/ocr/job/:jobid", (req, res) => {
+  res.sendFile(__dirname + "/public/js5/7/ocr_job.html")
+})
+
+app.get("/ocr/api/job/:jobid", (req, res) => {
+  ocr.getJob(req, res)
 })
 
 app.listen(process.env.PORT || 8123)
