@@ -18,65 +18,89 @@
 
     <title>JWT Authentication</title>
     <script src="/js5/6/auth.js"></script>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+    </style>
   </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarColor01"
-        aria-controls="navbarColor01"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
+  <body class="d-flex flex-column">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-      <div class="collapse navbar-collapse" id="navbarColor01">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/index.html">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/js4.html">JS4</a>
-          </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="/js5.html"
-              >JS5 <span class="sr-only">(current)</span></a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="https://www.c0d3.com/">C0D3</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="https://chat.c0d3.com/">Chat</a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-    
-    <main class="app-container"></main>
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/js4.html">JS4</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/js5.html"
+                >JS5 <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.c0d3.com/">C0D3</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://chat.c0d3.com/">Chat</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-fluid h-100 d-flex justify-content-center">
+      <div class="card align-self-center" id="app"></div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
 
     <script>
-      const $appContainer = document.querySelector(".app-container")
+      const $appContainer = document.getElementById("app")
       let jwt = localStorage.getItem("userjwt")
 
       const render = () => {
         $appContainer.innerHTML = `
-          <div class="container d-flex min-vh-100">
-            <div class="card my-auto mx-auto">
-              <div class="card-header font-weight-bold">
-                Success!
-              </div>
-              <div class="card-body" style="width: 25rem;">
-                <p class="card-text">Congratulations, you successfully logged in!</p>
-                <button class="btn btn-primary btn-lg btn-block mt-1" id="logout">
-                  Logout
-                </button>
-              </div>
-            </div>
+          <div class="card-header font-weight-bold">
+            Success!
+          </div>
+          <div class="card-body" style="width: 25rem;">
+            <p class="card-text">Congratulations, you successfully logged in!</p>
+            <button class="btn btn-primary btn-lg btn-block mt-1" id="logout">
+              Logout
+            </button>
           </div>
         `
         const $logout = document.getElementById("logout")
@@ -89,38 +113,34 @@
 
       const setupSignup = () => {
         $appContainer.innerHTML = `
-  <div class="container d-flex min-vh-100">
-      <div class="card my-auto mx-auto">
           <div class="card-header font-weight-bold">
-              Create New Account
+            Create New Account
           </div>
           <div class="card-body" style="width: 25rem;">
-              <div class="form-group">
-                  <label for="name">Name</label>
-                  <input type="text" class="form-control" id="name" />
-              </div>
-              <div class="form-group">
-                  <label for="username">Username</label>
-                  <input type="text" class="form-control" id="username" />
-              </div>
-              <div class="form-group">
-                  <label for="email">Email</label>
-                  <input type="email" class="form-control" id="email" />
-              </div>
-              <div class="form-group">
-                  <label for="password">Password</label>
-                  <input type="password" class="form-control" id="password" />
-              </div>
-              <button class="btn btn-primary btn-lg btn-block" id="submit">
-                  Submit
-              </button>
-              <button class="btn btn-secondary btn-lg btn-block mt-1" id="login">
-                  Login
-              </button>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" />
+            </div>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" id="email" />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password" />
+            </div>
+            <button class="btn btn-primary btn-lg btn-block" id="submit">
+              Submit
+            </button>
+            <button class="btn btn-secondary btn-lg btn-block mt-1" id="login">
+              Login
+            </button>
           </div>
-      </div>
-  </div>
-    `
+        `
         const $name = document.getElementById("name")
         const $username = document.getElementById("username")
         const $email = document.getElementById("email")
@@ -155,30 +175,26 @@
 
       const setupLogin = () => {
         $appContainer.innerHTML = `
-      <div class="container d-flex min-vh-100">
-          <div class="card my-auto mx-auto">
-              <div class="card-header font-weight-bold">
-                  Login
-              </div>
-              <div class="card-body" style="width: 25rem;">
-                  <div class="form-group">
-                      <label for="username">Username</label>
-                      <input type="text" class="form-control" id="username" />
-                  </div>
-                  <div class="form-group">
-                      <label for="password">Password</label>
-                      <input type="password" class="form-control" id="password" />
-                  </div>
-                  <button class="btn btn-primary btn-lg btn-block" id="submit">
-                      Submit
-                  </button>
-                  <button class="btn btn-secondary btn-lg btn-block mt-1" id="newacc">
-                      Create Account
-                  </button>
-              </div>
+          <div class="card-header font-weight-bold">
+              Login
           </div>
-      </div>
-    `
+          <div class="card-body" style="width: 25rem;">
+              <div class="form-group">
+                  <label for="username">Username</label>
+                  <input type="text" class="form-control" id="username" />
+              </div>
+              <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" />
+              </div>
+              <button class="btn btn-primary btn-lg btn-block" id="submit">
+                  Submit
+              </button>
+              <button class="btn btn-secondary btn-lg btn-block mt-1" id="newacc">
+                  Create Account
+              </button>
+          </div>
+        `
         const $username = document.getElementById("username")
         const $password = document.getElementById("password")
         const $submit = document.getElementById("submit")
