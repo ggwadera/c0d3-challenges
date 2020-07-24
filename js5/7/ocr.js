@@ -18,7 +18,7 @@ const deleteOldFiles = () => {
       }
     })
   }
-  setInterval(deleteOldFiles, FILE_LIFETIME)
+  setTimeout(deleteOldFiles, FILE_LIFETIME)
 }
 
 const postJob = (req, res) => {
@@ -34,7 +34,7 @@ const postJob = (req, res) => {
     job.text = text
     job.done = true
   })
-  setInterval(deleteOldFiles, FILE_LIFETIME)
+  setTimeout(deleteOldFiles, FILE_LIFETIME)
   return res.status(202).redirect(`/ocr/job/${id}`)
 }
 
