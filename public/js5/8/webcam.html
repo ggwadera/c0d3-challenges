@@ -68,7 +68,7 @@
       </nav>
     </header>
 
-    <main class="container-fluid d-flex justify-content-center">
+    <main class="container-lg d-flex justify-content-center">
       <div class="card mt-5">
         <div class="card-header font-weight-bold text-center">
           Take a picture with your webcam
@@ -121,9 +121,8 @@
       const button = document.getElementById("button")
       const canvas = document.getElementById("canvas")
       const context = canvas.getContext("2d")
-      const imageContainer = document.getElementById("imageList")
+      const imageList = document.getElementById("imageList")
 
-      let width, height
       navigator.mediaDevices
         .getUserMedia({
           video: true, // webcam
@@ -132,23 +131,19 @@
         .then((stream) => {
           video.srcObject = stream
           video.play()
-          video.addEventListener("loadedmetadata", () => {
-            width = video.clientWidth
-            height = video.clientHeight
-            canvas.width = width
-            canvas.height = height
-          })
+          video.addEventListener("loadedmetadata", () => {})
         })
 
       button.addEventListener("click", () => {
-        console.log("width", width)
-        console.log("height", height)
+        const width = video.clientWidth
+        const height = video.clientHeight
+        canvas.width = width
+        canvas.height = height
         context.drawImage(video, 0, 0, width, height)
 
         const pngData = canvas.toDataURL()
         const base64Data = pngData.replace(/^data:image\/png;base64,/, "")
 
-        // TODO: change this URL to your localhost url!
         fetch("/webcam/files", {
           method: "POST",
           headers: {
@@ -160,10 +155,10 @@
         })
           .then((r) => r.json())
           .then((data) => {
-            imageContainer.classList.remove("d-none")
+            imageList.classList.remove("d-none")
             const url = data.url
-            imageContainer.innerHTML =
-              imageContainer.innerHTML +
+            imageList.innerHTML +=
+              // imageList.innerHTML +
               `
               <a href="${url}" class="list-group-item list-group-item-action"
                 >${location.host}${url}</a
