@@ -105,3 +105,6 @@ dist
 
 # Tesseract train data
 eng.traineddata
+
+# Uploaded files
+public/files/*
