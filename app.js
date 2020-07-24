@@ -11,6 +11,7 @@ const ocr = require("./js5/7/ocr")
 
 const app = express()
 const upload = multer({ dest: "public/files/" })
+const port = process.env.PORT || 8123
 
 app.use(express.static("public"))
 app.use(express.json())
@@ -104,4 +105,8 @@ app.get("/ocr/api/job/:jobid", (req, res) => {
   ocr.getJob(req, res)
 })
 
-app.listen(process.env.PORT || 8123)
+app.listen(port, () => {
+  if (!process.env.PORT) {
+    console.log(`Server running at http://localhost:${port}`)
+  }
+})
