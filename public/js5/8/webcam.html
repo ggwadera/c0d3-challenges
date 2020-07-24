@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Selfie Queen</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootswatch Darkly CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css"
+      integrity="sha384-Bo21yfmmZuXwcN/9vKrA5jPUMhr7znVBBeLxT9MA4r2BchhusfJ6+n8TLGUcRAtL"
+      crossorigin="anonymous"
+    />
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      video,
+      canvas {
+        max-width: 640px;
+      }
+    </style>
+  </head>
+  <body class="d-flex flex-column">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/js4.html">JS4</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/js5.html"
+                >JS5 <span class="sr-only">(current)</span></a
+              >
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.c0d3.com/">C0D3</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://chat.c0d3.com/">Chat</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-fluid d-flex justify-content-center">
+      <div class="card mt-5">
+        <div class="card-header font-weight-bold text-center">
+          Take a picture with your webcam
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <video id="video" class="col-sm"></video>
+            <canvas id="canvas" class="col-sm"></canvas>
+          </div>
+          <div class="row">
+            <div class="col">
+              <button
+                id="button"
+                type="submit"
+                class="btn btn-primary btn-lg btn-block mt-3"
+              >
+                Take Picture
+              </button>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <div class="list-group-flush mt-3 d-none" id="imageList"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const video = document.getElementById("video")
+      const button = document.getElementById("button")
+      const canvas = document.getElementById("canvas")
+      const context = canvas.getContext("2d")
+      const imageContainer = document.getElementById("imageList")
+
+      let width, height
+      navigator.mediaDevices
+        .getUserMedia({
+          video: true, // webcam
+          audio: false, // microphone
+        })
+        .then((stream) => {
+          video.srcObject = stream
+          video.play()
+          video.addEventListener("loadedmetadata", () => {
+            width = video.clientWidth
+            height = video.clientHeight
+            canvas.width = width
+            canvas.height = height
+          })
+        })
+
+      button.addEventListener("click", () => {
+        console.log("width", width)
+        console.log("height", height)
+        context.drawImage(video, 0, 0, width, height)
+
+        const pngData = canvas.toDataURL()
+        const base64Data = pngData.replace(/^data:image\/png;base64,/, "")
+
+        // TODO: change this URL to your localhost url!
+        fetch("/webcam/files", {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify({
+            img: base64Data,
+          }),
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            imageContainer.classList.remove("d-none")
+            const url = data.url
+            imageContainer.innerHTML =
+              imageContainer.innerHTML +
+              `
+              <a href="${url}" class="list-group-item list-group-item-action"
+                >${location.host}${url}</a
+              >
+            `
+          })
+      })
+    </script>
+  </body>
+</html>

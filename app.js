@@ -8,13 +8,14 @@ const assets = require("./js5/4/assets")
 const chatroom = require("./js5/5/chatroom")
 const auth = require("./js5/6/jwt_auth")
 const ocr = require("./js5/7/ocr")
+const webcam = require('./js5/8/webcam')
 
 const app = express()
 const upload = multer({ dest: "public/files/" })
 const port = process.env.PORT || 8123
 
 app.use(express.static("public"))
-app.use(express.json())
+app.use(express.json({limit: '10mb'}))
 
 // 1. IP GEOLOCATION
 app.get("/visitors", (req, res) => {
@@ -104,7 +105,15 @@ app.get("/ocr/job/:jobid", (req, res) => {
 app.get("/ocr/api/job/:jobid", (req, res) => {
   ocr.getJob(req, res)
 })
+ocr.deleteOldFiles()
 
+// 8. Selfie Queen
+app.post("/webcam/files", (req, res) => {
+  webcam.postImage(req, res)
+})
+webcam.deleteOldFiles()
+
+// Start server
 app.listen(port, () => {
   if (!process.env.PORT) {
     console.log(`Server running at http://localhost:${port}`)
