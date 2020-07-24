@@ -34,7 +34,6 @@ const postJob = (req, res) => {
     job.text = text
     job.done = true
   })
-  setTimeout(deleteOldFiles, FILE_LIFETIME)
   return res.status(202).redirect(`/ocr/job/${id}`)
 }
 
@@ -47,4 +46,5 @@ const getJob = (req, res) => {
 module.exports = {
   postJob,
   getJob,
+  deleteOldFiles
 }
