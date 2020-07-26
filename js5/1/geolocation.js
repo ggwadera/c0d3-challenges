@@ -11,7 +11,7 @@ const visitorsRoute = (req, res) => {
   fetch(`https://js5.c0d3.com/location/api/ip/${ip}`)
     .then((response) => response.json())
     .then((body) => {
-      console.log(`Adding IP ${ip} from ${body.cityStr}`)
+      console.log(`${new Date().toString()} geolocation: adding IP ${ip} from ${body.cityStr}`)
       visitors[ip] = body
       renderPage(req, res, body)
     })
