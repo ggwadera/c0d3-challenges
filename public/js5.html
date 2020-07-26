@@ -3,10 +3,7 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <!-- Bootswatch Darkly CSS -->
     <link
@@ -18,7 +15,7 @@
 
     <title>Hello, world!</title>
   </head>
-  <body>
+  <body class="container-lg">
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
@@ -43,9 +40,7 @@
               <a class="nav-link" href="js4.html">JS4</a>
             </li>
             <li class="nav-item active">
-              <a class="nav-link" href="js5.html"
-                >JS5 <span class="sr-only">(current)</span></a
-              >
+              <a class="nav-link" href="js5.html">JS5 <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="https://www.c0d3.com/">C0D3</a>
@@ -59,185 +54,163 @@
     </header>
 
     <main>
-      <div class="container-lg">
-        <div class="jumbotron jumbotron-fluid rounded-bottom">
-          <div class="container">
-            <h1 class="display-4">JS5 - End To End</h1>
-            <p class="lead">
-              This is my
-              <a href="https://freedomains.dev/">freedomains.dev</a> page to
-              host my solutions for the
-              <a href="https://www.c0d3.com/curriculum/3">JS5 Challenges</a>
-              from <a href="https://www.c0d3.com/">C0D3</a>.
-            </p>
-            <hr class="my-4" />
-            <p>
-              Click on the buttons on the bottom of the cards to see each
-              challenge in action!
-            </p>
-            <p>
-              Contact: @ggwadera in
-              <a href="https://chat.c0d3.com/">chat.c0d3.com</a>.
-            </p>
+      <div class="jumbotron jumbotron-fluid rounded-bottom">
+        <div class="container">
+          <h1 class="display-4">JS5 - End To End</h1>
+          <p class="lead">
+            This is my
+            <a href="https://freedomains.dev/">freedomains.dev</a> page to host my solutions for the
+            <a href="https://www.c0d3.com/curriculum/3">JS5 Challenges</a>
+            from <a href="https://www.c0d3.com/">C0D3</a>.
+          </p>
+          <hr class="my-4" />
+          <p>
+            Click on the buttons on the bottom of the cards to see each challenge in action!
+          </p>
+          <p>
+            Contact: @ggwadera in
+            <a href="https://chat.c0d3.com/">chat.c0d3.com</a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="row justify-content-between">
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 1</h5>
+              <h6 class="card-subtitle mb-2 text-muted">IP Geolocation</h6>
+              <p class="card-text">
+                Code an API route to show a map with a geolocation using the request IP.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="/visitors" class="btn btn-primary">Check it out!</a>
+              <a href="/api/visitors" class="btn btn-secondary">API</a>
+            </div>
           </div>
         </div>
 
-        <div class="row justify-content-between">
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 1</h5>
-                <h6 class="card-subtitle mb-2 text-muted">IP Geolocation</h6>
-                <p class="card-text">
-                  Code an API route to show a map with a geolocation using the
-                  request IP.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="/visitors" class="btn btn-primary">Check it out!</a>
-                <a href="/api/visitors" class="btn btn-secondary">API</a>
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 2</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Commands</h6>
+              <p class="card-text">
+                Create a route that takes in an input box that lets you execute commands directly on your server.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="js5/2/commands.html" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
+        </div>
 
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 2</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Commands</h6>
-                <p class="card-text">
-                  Create a route that takes in an input box that lets you
-                  execute commands directly on your server.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="js5/2/commands.html" class="btn btn-primary"
-                  >Check it out!</a
-                >
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 3</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Meme Gen</h6>
+              <p class="card-text">
+                Create a API that generates an image meme using
+                <a href="https://www.npmjs.com/package/jimp">Jimp</a>.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="/memegen/api/great%20job?blur=4&black=true&src=https://placeimg.com/640/480/any" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
+        </div>
 
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 3</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Meme Gen</h6>
-                <p class="card-text">
-                  Create a API that generates an image meme using
-                  <a href="https://www.npmjs.com/package/jimp">Jimp</a>.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a
-                  href="/memegen/api/great%20job?blur=4&black=true&src=https://placeimg.com/640/480/any"
-                  class="btn btn-primary"
-                  >Check it out!</a
-                >
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 4</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Asset Creation</h6>
+              <p class="card-text">
+                Build APIs for powering the text editing site.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="js5/4/assets.html" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
+        </div>
 
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 4</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Asset Creation</h6>
-                <p class="card-text">
-                  Build APIs for powering the text editing site.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="js5/4/assets.html" class="btn btn-primary"
-                  >Check it out!</a
-                >
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 5</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                Chatroom using JWT Auth
+              </h6>
+              <p class="card-text">
+                Build a chatroom using third-party authentication.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="/chatroom" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
+        </div>
 
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 5</h5>
-                <h6 class="card-subtitle mb-2 text-muted">
-                  Chatroom using JWT Auth
-                </h6>
-                <p class="card-text">
-                  Build a chatroom using third-party authentication.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="/chatroom" class="btn btn-primary">Check it out!</a>
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 6</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Authentication</h6>
+              <p class="card-text">Build your own backend for authentication using <a href="https://www.npmjs.com/package/jsonwebtoken">JWT</a>.</p>
+            </div>
+            <div class="card-footer">
+              <a href="/auth" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
+        </div>
 
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 6</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Authentication</h6>
-                <p class="card-text">
-                  Build your own backend for authentication using <a href="https://www.npmjs.com/package/jsonwebtoken">JWT</a>.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="/auth" class="btn btn-primary">Check it out!</a>
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 7</h5>
+              <h6 class="card-subtitle mb-2 text-muted">
+                Image Text Extraction
+              </h6>
+              <p class="card-text">
+                Build an API for image OCR using
+                <a href="https://tesseract.projectnaptha.com/">Tesseract.js</a>.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="/js5/7/ocr.html" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
+        </div>
 
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 7</h5>
-                <h6 class="card-subtitle mb-2 text-muted">
-                  Image Text Extraction
-                </h6>
-                <p class="card-text">
-                  Build an API for image OCR using
-                  <a href="https://tesseract.projectnaptha.com/">Tesseract.js</a
-                  >.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="/js5/7/ocr.html" class="btn btn-primary"
-                  >Check it out!</a
-                >
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 8</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Selfie Queen</h6>
+              <p class="card-text">
+                Build an application where users can go to your website and take a picture.
+              </p>
+            </div>
+            <div class="card-footer">
+              <a href="/js5/8/webcam.html" class="btn btn-primary">Check it out!</a>
             </div>
           </div>
+        </div>
 
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 8</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Selfie Queen</h6>
-                <p class="card-text">
-                  Build an application where users can go to your website and
-                  take a picture.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="/js5/8/webcam.html" class="btn btn-primary"
-                  >Check it out!</a
-                >
-              </div>
+        <div class="col-lg-4 col-md-6 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Challenge 9</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Create a MemeChat</h6>
+              <p class="card-text">
+                Final Project: Complete a chatroom.
+              </p>
             </div>
-          </div>
-
-          <div class="col-md-4 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title">Challenge 9</h5>
-                <h6 class="card-subtitle mb-2 text-muted">Create a MemeChat</h6>
-                <p class="card-text">
-                  Final Project: Complete a chatroom.
-                </p>
-              </div>
-              <div class="card-footer">
-                <a href="#" class="btn btn-danger">In development</a>
-              </div>
+            <div class="card-footer">
+              <a href="#" class="btn btn-danger">In development</a>
             </div>
           </div>
         </div>
