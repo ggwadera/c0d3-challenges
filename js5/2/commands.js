@@ -13,7 +13,7 @@ const runCommand = (req, res) => {
   if (!allowedCommands[command]) {
     return res.send(JSON.stringify({ output: "Command not allowed." }))
   }
-  console.log(`${new Date().toString()} commands: running ${command} ${args}`)
+  console.log(`${new Date().toString()} commands: running "${command} ${args.join(' ')}"`)
   execFile(command, args, (error, stdout, stderr) => {
     if (error) {
       console.error(`${new Date().toString()} commands: ${error}`)
