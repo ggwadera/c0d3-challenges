@@ -9,6 +9,7 @@ const chatroom = require("./js5/5/chatroom")
 const auth = require("./js5/6/jwt_auth")
 const ocr = require("./js5/7/ocr")
 const webcam = require('./js5/8/webcam')
+const memechat = require('./js5/9/memechat')
 
 const app = express()
 const upload = multer({ dest: "public/files/" })
@@ -112,6 +113,35 @@ app.post("/webcam/files", (req, res) => {
   webcam.postImage(req, res)
 })
 webcam.deleteOldFiles()
+
+// 9. MemeChat
+app.get("/memechat/:room?", (req, res) => {
+  res.sendFile(__dirname + "/public/js5/9/memechat.html")
+})
+
+app.use("/memechat/api/*", (req, res, next) => {
+  chatroom.getUserMiddleware(req, res, next)
+})
+
+app.get("/memechat/api/session", (req, res) => {
+  chatroom.getSession(req, res)
+})
+
+app.get("/memechat/api/:room/messages", (req, res) => {
+  chatroom.getMessages(req, res)
+})
+
+app.post("/memechat/api/:room/messages", (req, res) => {
+  chatroom.postMessage(req, res)
+})
+
+app.get("/memechat/api/files", (req, res) => {
+  chatroom.getImage(req, res)
+})
+
+app.post("/memechat/api/files", (req, res) => {
+  chatroom.postImage(req, res)
+})
 
 // Start server
 app.listen(port, () => {
