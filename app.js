@@ -1,4 +1,5 @@
 const express = require("express")
+const session = require("express-session")
 const multer = require("multer")
 
 const geolocation = require("./js5/1/geolocation")
@@ -8,15 +9,16 @@ const assets = require("./js5/4/assets")
 const chatroom = require("./js5/5/chatroom")
 const auth = require("./js5/6/jwt_auth")
 const ocr = require("./js5/7/ocr")
-const webcam = require('./js5/8/webcam')
-const memechat = require('./js5/9/memechat')
+const webcam = require("./js5/8/webcam")
+const memechat = require("./js5/9/memechat")
 
 const app = express()
 const upload = multer({ dest: "public/files/" })
 const port = process.env.PORT || 8123
 
-app.use(express.static("public"))
-app.use(express.json({limit: '10mb'}))
+app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: false, cookie: { maxAge: 1000*60*60, sameSite: true } })) // cookie
+app.use(express.static("public")) // generate static link to files in /public
+app.use(express.json({ limit: "10mb" })) // parse json body in the requests
 
 // 1. IP GEOLOCATION
 app.get("/visitors", (req, res) => {
@@ -119,28 +121,30 @@ app.get("/memechat/:room?", (req, res) => {
   res.sendFile(__dirname + "/public/js5/9/memechat.html")
 })
 
-app.use("/memechat/api/*", (req, res, next) => {
-  chatroom.getUserMiddleware(req, res, next)
+app.get("/memechat/api/session", (req, res) => {
+  if (!req.session.username) {
+    return res.status(403).json({ error: "Invalid session" })
+  }
+  res.sendStatus(200)
 })
 
-app.get("/memechat/api/session", (req, res) => {
-  chatroom.getSession(req, res)
+app.post("/memechat/api/session", (req, res) => {
+  if (!req.session.username) {
+    req.session.username = req.body.username
+  }
+  res.sendStatus(201)
 })
 
 app.get("/memechat/api/:room/messages", (req, res) => {
-  chatroom.getMessages(req, res)
+  memechat.getMessages(req, res)
 })
 
 app.post("/memechat/api/:room/messages", (req, res) => {
-  chatroom.postMessage(req, res)
-})
-
-app.get("/memechat/api/files", (req, res) => {
-  chatroom.getImage(req, res)
+  memechat.postMessage(req, res)
 })
 
 app.post("/memechat/api/files", (req, res) => {
-  chatroom.postImage(req, res)
+  memechat.postImage(req, res)
 })
 
 // Start server
