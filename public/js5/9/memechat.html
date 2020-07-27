@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootswatch Darkly CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css"
+      integrity="sha384-Bo21yfmmZuXwcN/9vKrA5jPUMhr7znVBBeLxT9MA4r2BchhusfJ6+n8TLGUcRAtL"
+      crossorigin="anonymous"
+    />
+
+    <title>Chatroom</title>
+    <style>
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      main {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/js4.html">JS4</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/js5.html">JS5 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.c0d3.com/">C0D3</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://chat.c0d3.com/">Chat</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="card-header font-weight-bold border-0 rounded-0 d-none" id="roomTitle"></div>
+    <main class="container-fluid h-100 justify-content-center m-0 p-0" id="app"></main>
+    <div class="card-footer border-0 rounded-0 d-none" id="roomInput">
+      <div class="input-group">
+        <input type="text" class="form-control" id="newmessage" placeholder="Message..." />
+        <div class="input-group-append">
+          <button class="btn btn-primary border-dark" type="button" id="send">
+            Send
+          </button>
+        </div>
+        <div class="input-group-append">
+          <button class="btn btn-primary border-dark" type="button" id="newpic">
+            New Picture
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      const $appContainer = document.getElementById("app")
+
+      const renderSelection = () => {
+        $appContainer.innerHTML = `
+          <div class="card align-self-center">
+            <div class="card-header font-weight-bold">
+              Enter a Room
+            </div>
+            <div class="card-body" style="width: 25rem;">
+              <div class="form-group">
+                <label for="room">Room Name</label>
+                <input type="text" class="form-control" id="room" />
+              </div>
+              <button class="btn btn-primary btn-lg btn-block" id="submit">
+                Submit
+              </button>
+            </div>
+          </div>
+        `
+        const $roomname = document.getElementById("room")
+        const $submit = document.getElementById("submit")
+
+        const enterRoom = () => {
+          const name = $roomname.value
+          window.location = `/memechat/${name}`
+        }
+
+        $roomname.addEventListener("keyup", (e) => {
+          if (e.key === "Enter") enterRoom()
+        })
+
+        $submit.addEventListener("click", () => {
+          enterRoom()
+        })
+      }
+
+      const renderRoom = (roomName) => {
+        const roomTitle = document.getElementById("roomTitle")
+        const roomInput = document.getElementById("roomInput")
+        roomTitle.innerText = `Chatroom ${roomName}`
+
+        $appContainer.innerHTML = `
+          <div class="card align-self-center w-100 h-100 border-0 rounded-0">
+            <div class="card-body h-100 overflow-auto" id="scrollable">
+              <ul class="list-unstyled" id="messages1"></ul>
+              <ul class="list-unstyled d-none" id="messages2"></ul>
+            </div>
+          </div>
+        `
+        const $message = document.getElementById("newmessage")
+        const $scrollable = document.getElementById("scrollable")
+        let $current = document.getElementById("messages1")
+        let $invisible = document.getElementById("messages2")
+        roomTitle.classList.toggle("d-none")
+        roomInput.classList.toggle("d-none")
+        $message.focus()
+
+        const sendMessage = () => {
+          const value = $message.value
+          fetch(`/memechat/api/${roomName}/messages`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              message: value
+            })
+          }).then(() => {
+            $message.value = ""
+          })
+        }
+
+        const getMessage = () => {
+          fetch(`/memechat/api/${roomName}/messages`, {
+            credentials: "include"
+          })
+            .then((r) => r.json())
+            .then((data) => {
+              let counter = 0
+              const images = []
+
+              const display = () => {
+                $current.classList.toggle("d-none")
+                $invisible.classList.toggle("d-none")
+                //swap the elements for the next update
+                const tmp = $current
+                $current = $invisible
+                $invisible = tmp
+                //scroll to the end
+                $scrollable.scrollTop = $scrollable.scrollHeight
+              }
+
+              const loadedCounter = () => {
+                counter++
+                if (counter === images.length) {
+                  display()
+                }
+              }
+
+              $invisible.innerHTML = data.reduce((acc, e, i) => {
+                const image = new Image(64, 64)
+                image.addEventListener("load", loadedCounter, false)
+                image.src = `/files/${e.username}.png?${Date.now()}`
+                image.classList.add("mr-3")
+                images.push(image)
+                return `${acc}
+                <li class="media mb-3">
+                  ${image.outerHTML}
+                  <div class="media-body">
+                    <h5 class="mt-0">${e.username}</h5>
+                    ${e.message}
+                  </div>
+                </li>`
+              }, "")
+              setTimeout(getMessage, 2000)
+            })
+        }
+
+        $message.onkeyup = (e) => {
+          if (e.key === "Enter") {
+            return sendMessage()
+          }
+        }
+
+        document.getElementById("send").onclick = () => {
+          sendMessage()
+        }
+
+        document.getElementById("newpic").onclick = () => {
+          roomTitle.classList.toggle("d-none")
+          roomInput.classList.toggle("d-none")
+          takePicture()
+        }
+
+        getMessage()
+      }
+
+      const render = () => {
+        const room = window.location.pathname.split("/")[2]
+        if (!room) {
+          return renderSelection()
+        }
+        return renderRoom(room)
+      }
+
+      const takePicture = () => {
+        $appContainer.innerHTML = `
+          <div class="card align-self-center" style="max-width: 640px">
+            <div class="card-header font-weight-bold text-center">
+              Take a picture with your webcam
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12">
+                  <video id="video" class="img-fluid align-self-center"></video>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="meme">Type a text to appear in your photo</label>
+                    <input type="text" class="form-control" id="meme">
+                  </div>
+                </div>
+                <div class="col-12">
+                  <button id="button" type="submit" class="btn btn-primary btn-lg btn-block">
+                    Take Picture
+                  </button>
+                </div>
+                <div class="col">
+                  <div class="list-group-flush mt-3 d-none" id="imageList"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <canvas id="canvas" class="d-none"></canvas>
+        `
+
+        const video = document.getElementById("video")
+        const meme = document.getElementById("meme")
+        const button = document.getElementById("button")
+        const canvas = document.getElementById("canvas")
+        const context = canvas.getContext("2d")
+        let videostream
+
+        navigator.mediaDevices
+          .getUserMedia({
+            video: true, // webcam
+            audio: false // microphone
+          })
+          .then((stream) => {
+            videostream = stream
+            video.srcObject = stream
+            video.play()
+          })
+
+        button.addEventListener("click", () => {
+          const width = video.clientWidth
+          const height = video.clientHeight
+          canvas.width = width
+          canvas.height = height
+          context.drawImage(video, 0, 0, width, height)
+
+          const pngData = canvas.toDataURL()
+          const base64Data = pngData.replace(/^data:image\/png;base64,/, "")
+
+          fetch("/memechat/api/files", {
+            method: "POST",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              img: base64Data,
+              meme: meme.value
+            })
+          }).then((r) => {
+            videostream.getTracks().forEach((track) => track.stop())
+            r.status === 201 ? render() : location.reload()
+          })
+        })
+      }
+
+      const setupLogin = () => {
+        $appContainer.innerHTML = `
+          <div class="card align-self-center">
+            <div class="card-header font-weight-bold">
+              Login
+            </div>
+            <div class="card-body" style="width: 25rem;">
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" />
+              </div>
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit">
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        `
+        const $username = document.getElementById("username")
+        const $submit = document.getElementById("submit")
+
+        $submit.addEventListener("click", () => {
+          // Login button click
+          fetch("/memechat/api/session", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+              "content-type": "application/json"
+            },
+            body: JSON.stringify({
+              username: $username.value
+            })
+          }).then((response) => {
+            if (response.status === 201) takePicture()
+          })
+        })
+      }
+
+      const startApp = () => {
+        fetch("/memechat/api/session", {
+          credentials: "include"
+        }).then((r) => {
+          if (r.status !== 200) return setupLogin()
+          render()
+        })
+      }
+      startApp()
+    </script>
+  </body>
+</html>
