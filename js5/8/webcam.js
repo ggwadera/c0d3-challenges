@@ -6,6 +6,10 @@ const FILE_LIFETIME = 1000 * 60 * 10 // 10 minutes
 const files = {}
 
 const dir = path.resolve("./public")
+
+// Create files folder if it not exists
+!fs.existsSync(dir + '/files') && fs.mkdirSync(dir + '/files', {recursive: true});
+
 console.log(`${new Date().toString()} webcam: dir resolved to ${dir}`)
 
 const deleteOldFiles = () => {
