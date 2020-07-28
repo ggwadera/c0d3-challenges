@@ -1,9 +1,7 @@
-const fs = require("fs")
 const path = require("path")
 const gm = require("gm").subClass({ imageMagick: true })
-const { v4: uuidv4 } = require("uuid")
 
-const dir = path.resolve("./public")
+const dir = path.resolve("./public/files")
 console.log(`${new Date().toString()} memechat: dir resolved to ${dir}`)
 
 const rooms = {}
@@ -36,7 +34,7 @@ const postImage = (req, res) => {
     .fontSize(70)
     .stroke("#ffffff")
     .drawText(0, 200, req.body.meme)
-    .write(`${dir}/files/${req.session.username}.png`, (err) => {
+    .write(`${dir}/${req.session.username}.png`, (err) => {
       if (err) {
         console.error(err)
         return res.sendStatus(500)
