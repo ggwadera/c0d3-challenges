@@ -1,8 +1,14 @@
 const fetch = require("node-fetch")
 const fs = require("fs")
 
-const visitors = {}
-const visitorCount = {}
+const visitors = {} // cache visitors by IP
+const visitorCount = {} // keep counter by city
+
+/**
+ * GET route to get the user location from IP
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const visitorsRoute = (req, res) => {
   const ip = req.get("x-forwarded-for")
   if (visitors[ip]) {
@@ -17,6 +23,12 @@ const visitorsRoute = (req, res) => {
     })
 }
 
+/**
+ * Renders the HTML page by replacing some parts with info from the user
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ * @param {Object} body - JSON containg info from the user IP
+ */
 const renderPage = (req, res, body) => {
   visitorCount[body.cityStr] = (visitorCount[body.cityStr] || 0) + 1
   fs.readFile(__dirname + "/geolocation.html", "utf8", (err, html) => {
@@ -40,11 +52,19 @@ const renderPage = (req, res, body) => {
   })
 }
 
+/**
+ * GET route for the API, sends back a JSON with all the visitors info
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const findAll = (req, res) => {
   res.set("content-type", "application/json")
   res.send(JSON.stringify(visitors))
 }
 
+/**
+ * Function to mock requests from random IPs to populate the list
+ */
 const mock = () => {
   fs.readFile(__dirname + "/mockIPs.txt", "utf-8", (err, data) => {
     if (err) {
@@ -59,12 +79,12 @@ const mock = () => {
           console.log(`Adding IP ${ip} from ${body.cityStr}`)
           visitors[ip] = body
           visitorCount[body.cityStr] = (visitorCount[body.cityStr] || 0) + 1
-          // renderPage(req, res, body)
         })
     })
     console.log('ENDING MOCK IP REQUESTS\n')
   })
 }
+
 module.exports = {
   visitorsRoute,
   findAll,
