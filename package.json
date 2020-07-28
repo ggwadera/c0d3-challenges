@@ -5,7 +5,7 @@
   "main": "deploy.config.js",
   "scripts": {
     "start": "[[ $(ls -A ./public/files) ]] && rm ./public/files/*; nodemon app.js",
-    "start:myproxy": "[[ $(ls -A ./public/files) ]] && rm ./public/files/*; node app.js",
+    "start:myproxy": "rm ./public/files/*; node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
