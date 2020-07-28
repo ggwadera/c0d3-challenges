@@ -1,8 +1,12 @@
 const Jimp = require("jimp")
-const fetch = require('node-fetch')
 
-const cache = {}
+const cache = {} // last 10 images cache
 
+/**
+ * Caches the image and deletes the oldest one if there's more than 10
+ * @param {string} src - Image source URL
+ * @param {} image - Image object from Jimp
+ */
 const cacheImage = (src, image) => {
   if (!cache[src]) {
     cache[src] = { image: image }
@@ -16,6 +20,11 @@ const cacheImage = (src, image) => {
   }
 }
 
+/**
+ * Generates a meme with the parameters in the request
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const genMeme = async (req, res) => {
   const text = req.params.text
   const blur = parseInt(req.query.blur) || 0
@@ -47,15 +56,6 @@ const genMeme = async (req, res) => {
   }
 }
 
-const test = () => {
-    for (let i = 0; i < 15; i++) {
-        const url = `http://localhost:8123/memegen/api/test?src=https://placeimg.com/${500 + i * 10}/600/any`
-        console.log(i, url)
-        fetch(url).then(console.log('test ' + i))
-    }
-}
-
 module.exports = {
   genMeme,
-  test
 }
