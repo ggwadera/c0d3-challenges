@@ -184,7 +184,7 @@
             .then((r) => r.json())
             .then((data) => {
               let counter = 0
-              const images = []
+              const images = {}
 
               const display = () => {
                 $current.classList.toggle("d-none")
@@ -199,20 +199,22 @@
 
               const loadedCounter = () => {
                 counter++
-                if (counter === images.length) {
+                if (counter === Object.keys(images).length) {
                   display()
                 }
               }
 
               $invisible.innerHTML = data.reduce((acc, e, i) => {
-                const image = new Image(64, 64)
-                image.addEventListener("load", loadedCounter, false)
-                image.src = `/files/${e.username}.png?${Date.now()}`
-                image.classList.add("mr-3")
-                images.push(image)
+                if (!images[e.username]) {
+                  const image = new Image(64, 64)
+                  image.addEventListener("load", loadedCounter, false)
+                  image.src = `/files/${e.username}.png?${Date.now()}`
+                  image.classList.add("mr-3")
+                  images[e.username] = image
+                }
                 return `${acc}
                 <li class="media mb-3">
-                  ${image.outerHTML}
+                  ${images[e.username].outerHTML}
                   <div class="media-body">
                     <h5 class="mt-0">${e.username}</h5>
                     ${e.message}
