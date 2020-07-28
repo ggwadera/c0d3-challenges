@@ -12,6 +12,9 @@ const dir = path.resolve("./public")
 
 console.log(`${new Date().toString()} webcam: dir resolved to ${dir}`)
 
+/**
+ * Delete files older than FILE_LIFETIME
+ */
 const deleteOldFiles = () => {
   if (Object.keys(files).length > 0) {
     const maxTime = Date.now() - FILE_LIFETIME
@@ -28,6 +31,11 @@ const deleteOldFiles = () => {
   setTimeout(deleteOldFiles, FILE_LIFETIME)
 }
 
+/**
+ * Saves a new image file in the server from the base64 buffer sent in the body
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const postImage = (req, res) => {
   const img = req.body.img
   const id = uuidv4()
