@@ -12,6 +12,11 @@ const usersById = {}
 const usersByUsername = {}
 const usersByEmail = {}
 
+/**
+ * Validates the user input and creates a new token for the user
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const postUser = (req, res) => {
   const data = req.body
   const username = data.username
@@ -68,6 +73,11 @@ const postUser = (req, res) => {
     })
 }
 
+/**
+ * Validates the user password with the stored hash and sends the JWT if valid
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const postSession = (req, res) => {
   const username = req.body.username
   const password = req.body.password
@@ -86,6 +96,11 @@ const postSession = (req, res) => {
   })
 }
 
+/**
+ * Validates the user token
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const getSession = (req, res) => {
   const token = req.headers.authorization.split(" ")[1]
   const decoded = jwt.decode(token)
