@@ -5,6 +5,9 @@ const fs = require("fs")
 const FILE_LIFETIME = 1000 * 60 * 10 // 10 minutes
 const jobs = {}
 
+/**
+ * Delete jobs that are done and are older than FILE_LIFETIME
+ */
 const deleteOldFiles = () => {
   if (Object.keys(jobs).length > 0) {
     const maxTime = Date.now() - FILE_LIFETIME
@@ -21,6 +24,11 @@ const deleteOldFiles = () => {
   setTimeout(deleteOldFiles, FILE_LIFETIME)
 }
 
+/**
+ * Creates a new OCR job using Tesseract.js to recognize the text in the sent image
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const postJob = (req, res) => {
   const path = req.file.path
   const filename = req.file.filename
@@ -37,6 +45,11 @@ const postJob = (req, res) => {
   return res.status(202).redirect(`/ocr/job/${id}`)
 }
 
+/**
+ * Sends back a JSON with the job status and results
+ * @param {Request} req - Request object
+ * @param {Response} res - Response object
+ */
 const getJob = (req, res) => {
   const job = jobs[req.params.jobid]
   if (!job) return res.status(404).json({ error: "Job not found" })
