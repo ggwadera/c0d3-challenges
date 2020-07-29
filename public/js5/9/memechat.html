@@ -72,7 +72,7 @@
       </nav>
     </header>
 
-    <main class="container-fluid w-100 h-100 justify-content-center m-0 p-0" id="app"></main>
+    <main class="container-fluid w-100 h-100" id="app"></main>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -97,14 +97,14 @@
 
       const renderRoom = () => {
         $appContainer.innerHTML = `
-          <button class="btn btn-primary" type="button" id="newpic" onclick="takePicture()">
+          <button class="btn btn-primary my-3 mx-2 font-weight-bold" type="button" id="newpic" onclick="takePicture()">
             New Picture
           </button>
-          <div class="list-unstyled" id="messages1"></div>
-          <div class="list-unstyled d-none" id="messages2"></div>
+          <div class="row" id="memes1"></div>
+          <div class="row d-none" id="memes2"></div>
         `
-        let $current = document.getElementById("messages1")
-        let $invisible = document.getElementById("messages2")
+        let $current = document.getElementById("memes1")
+        let $invisible = document.getElementById("memes2")
 
         const getUsers = () => {
           fetch(`/memechat/api/room`, {
@@ -134,8 +134,9 @@
                 const image = new Image()
                 image.addEventListener("load", loadedCounter, false)
                 image.src = `${img}?${Date.now()}`
+                image.classList.add('img-fluid', 'p-2')
                 images.push(image)
-                return `${acc}<div>${image.outerHTML}</div> `
+                return `${acc}<div class="col-md-4">${image.outerHTML}</div> `
               }, "")
               setTimeout(getUsers, 1000)
             })
@@ -146,7 +147,7 @@
 
       const takePicture = () => {
         $appContainer.innerHTML = `
-          <div class="card align-self-center" style="max-width: 640px">
+          <div class="card mx-auto my-auto" style="max-width: 640px">
             <div class="card-header font-weight-bold text-center">
               Take a picture with your webcam
             </div>
@@ -222,7 +223,7 @@
 
       const setupLogin = () => {
         $appContainer.innerHTML = `
-          <div class="card align-self-center">
+          <div class="card mx-auto my-auto">
             <div class="card-header font-weight-bold">
               Login
             </div>
