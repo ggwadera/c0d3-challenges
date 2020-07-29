@@ -16,7 +16,7 @@ const app = express()
 const upload = multer({ dest: "public/files/" })
 const port = process.env.PORT || 8123
 
-app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: false, cookie: { maxAge: 1000*60*60, sameSite: true } })) // cookie
+app.use(session({ secret: "keyboard cat", resave: false, saveUninitialized: false, cookie: { maxAge: 1000 * 60 * 60, sameSite: true } })) // cookie
 app.use(express.static("public")) // generate static link to files in /public
 app.use(express.json({ limit: "10mb" })) // parse json body in the requests
 
@@ -135,12 +135,8 @@ app.post("/memechat/api/session", (req, res) => {
   res.sendStatus(201)
 })
 
-app.get("/memechat/api/:room/messages", (req, res) => {
-  memechat.getMessages(req, res)
-})
-
-app.post("/memechat/api/:room/messages", (req, res) => {
-  memechat.postMessage(req, res)
+app.get("/memechat/api/room/", (req, res) => {
+  memechat.getUsers(req, res)
 })
 
 app.post("/memechat/api/files", (req, res) => {

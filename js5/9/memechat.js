@@ -4,43 +4,15 @@ const gm = require("gm").subClass({ imageMagick: true })
 const dir = path.resolve("./public/files")
 console.log(`${new Date().toString()} memechat: dir resolved to ${dir}`)
 
-const rooms = {}
+const room = {}
 
 /**
- * Returns the room object array, creating the room if it doesn't exists
- * @param {string} room - Room name
- * @returns {Object[]} Object array containing the usernames and messages
- */
-const getRoom = (room) => {
-  if (!rooms[room]) {
-    console.log(`${new Date().toString()} memechat: creating room ${room}`)
-    rooms[room] = []
-  }
-  return rooms[room]
-}
-
-/**
- * Sends a JSON with all the messages in the queried room
+ * Sends a JSON with all the users in the room
  * @param {Request} req - Request object
  * @param {Response} res - Response object
  */
-const getMessages = (req, res) => {
-  const room = getRoom(req.params.room)
+const getUsers = (req, res) => {
   return res.json(room)
-}
-
-/**
- * Inserts a new message in the queried room
- * @param {Request} req - Request object
- * @param {Response} res - Response object
- */
-const postMessage = (req, res) => {
-  const room = getRoom(req.params.room)
-  const username = req.session.username
-  const message = req.body.message
-  room.push({ username, message })
-  console.log(`${new Date().toString()} memechat: new message in room ${req.params.room} from ${username}`)
-  res.sendStatus(201)
 }
 
 /**
@@ -50,22 +22,23 @@ const postMessage = (req, res) => {
  */
 const postImage = (req, res) => {
   const img = Buffer.from(req.body.img, "base64")
+  const username = req.session.username
   gm(img)
     .fontSize(70)
     .stroke("#ffffff")
     .drawText(0, 200, req.body.meme)
-    .write(`${dir}/${req.session.username}.png`, (err) => {
+    .write(`${dir}/${username}.png`, (err) => {
       if (err) {
         console.error(err)
         return res.sendStatus(500)
       }
-      console.log(`${new Date().toString()} memechat: new image ${req.session.username}.png`)
+      room[username] = `/files/${username}.png`
+      console.log(`${new Date().toString()} memechat: new image from ${username}.png`)
       res.sendStatus(201)
     })
 }
 
 module.exports = {
-  getMessages,
-  postMessage,
+  getUsers,
   postImage
 }

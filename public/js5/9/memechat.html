@@ -22,10 +22,15 @@
       }
 
       main {
-        flex: 1 1 0;
         display: flex;
+        flex: 1 1 0;
         flex-direction: column;
         overflow-y: auto;
+      }
+
+      img {
+        max-width: 250px;
+        height: auto;
       }
     </style>
   </head>
@@ -67,23 +72,7 @@
       </nav>
     </header>
 
-    <div class="card-header font-weight-bold border-0 rounded-0 d-none" id="roomTitle"></div>
-    <main class="container-fluid h-100 justify-content-center m-0 p-0" id="app"></main>
-    <div class="card-footer border-0 rounded-0 d-none" id="roomInput">
-      <div class="input-group">
-        <input type="text" class="form-control" id="newmessage" placeholder="Message..." />
-        <div class="input-group-append">
-          <button class="btn btn-primary border-dark" type="button" id="send">
-            Send
-          </button>
-        </div>
-        <div class="input-group-append">
-          <button class="btn btn-primary border-dark" type="button" id="newpic">
-            New Picture
-          </button>
-        </div>
-      </div>
-    </div>
+    <main class="container-fluid w-100 h-100 justify-content-center m-0 p-0" id="app"></main>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -106,85 +95,25 @@
     <script>
       const $appContainer = document.getElementById("app")
 
-      const renderSelection = () => {
+      const renderRoom = () => {
         $appContainer.innerHTML = `
-          <div class="card align-self-center">
-            <div class="card-header font-weight-bold">
-              Enter a Room
-            </div>
-            <div class="card-body" style="width: 25rem;">
-              <div class="form-group">
-                <label for="room">Room Name</label>
-                <input type="text" class="form-control" id="room" />
-              </div>
-              <button class="btn btn-primary btn-lg btn-block" id="submit">
-                Submit
-              </button>
-            </div>
-          </div>
+          <button class="btn btn-primary" type="button" id="newpic" onclick="takePicture()">
+            New Picture
+          </button>
+          <div class="list-unstyled" id="messages1"></div>
+          <div class="list-unstyled d-none" id="messages2"></div>
         `
-        const $roomname = document.getElementById("room")
-        const $submit = document.getElementById("submit")
-
-        const enterRoom = () => {
-          const name = $roomname.value
-          window.location = `/memechat/${name}`
-        }
-
-        $roomname.addEventListener("keyup", (e) => {
-          if (e.key === "Enter") enterRoom()
-        })
-
-        $submit.addEventListener("click", () => {
-          enterRoom()
-        })
-      }
-
-      const renderRoom = (roomName) => {
-        const roomTitle = document.getElementById("roomTitle")
-        const roomInput = document.getElementById("roomInput")
-        roomTitle.innerText = `Chatroom ${roomName}`
-
-        $appContainer.innerHTML = `
-          <div class="card align-self-center w-100 h-100 border-0 rounded-0">
-            <div class="card-body h-100 overflow-auto" id="scrollable">
-              <ul class="list-unstyled" id="messages1"></ul>
-              <ul class="list-unstyled d-none" id="messages2"></ul>
-            </div>
-          </div>
-        `
-        const $message = document.getElementById("newmessage")
-        const $scrollable = document.getElementById("scrollable")
         let $current = document.getElementById("messages1")
         let $invisible = document.getElementById("messages2")
-        roomTitle.classList.toggle("d-none")
-        roomInput.classList.toggle("d-none")
-        $message.focus()
 
-        const sendMessage = () => {
-          const value = $message.value
-          fetch(`/memechat/api/${roomName}/messages`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "content-type": "application/json"
-            },
-            body: JSON.stringify({
-              message: value
-            })
-          }).then(() => {
-            $message.value = ""
-          })
-        }
-
-        const getMessage = () => {
-          fetch(`/memechat/api/${roomName}/messages`, {
+        const getUsers = () => {
+          fetch(`/memechat/api/room`, {
             credentials: "include"
           })
             .then((r) => r.json())
             .then((data) => {
               let counter = 0
-              const images = {}
+              const images = []
 
               const display = () => {
                 $current.classList.toggle("d-none")
@@ -193,63 +122,26 @@
                 const tmp = $current
                 $current = $invisible
                 $invisible = tmp
-                //scroll to the end
-                $scrollable.scrollTop = $scrollable.scrollHeight
               }
 
               const loadedCounter = () => {
-                counter++
-                if (counter === Object.keys(images).length) {
+                if (++counter === images.length) {
                   display()
                 }
               }
 
-              $invisible.innerHTML = data.reduce((acc, e, i) => {
-                if (!images[e.username]) {
-                  const image = new Image(64, 64)
-                  image.addEventListener("load", loadedCounter, false)
-                  image.src = `/files/${e.username}.png?${Date.now()}`
-                  image.classList.add("mr-3")
-                  images[e.username] = image
-                }
-                return `${acc}
-                <li class="media mb-3">
-                  ${images[e.username].outerHTML}
-                  <div class="media-body">
-                    <h5 class="mt-0">${e.username}</h5>
-                    ${e.message}
-                  </div>
-                </li>`
+              $invisible.innerHTML = Object.entries(data).reduce((acc, [user, img], i) => {
+                const image = new Image()
+                image.addEventListener("load", loadedCounter, false)
+                image.src = `${img}?${Date.now()}`
+                images.push(image)
+                return `${acc}<div>${image.outerHTML}</div> `
               }, "")
-              setTimeout(getMessage, 1000)
+              setTimeout(getUsers, 1000)
             })
         }
 
-        $message.onkeyup = (e) => {
-          if (e.key === "Enter") {
-            return sendMessage()
-          }
-        }
-
-        document.getElementById("send").onclick = () => {
-          sendMessage()
-        }
-
-        document.getElementById("newpic").onclick = () => {
-          roomTitle.classList.toggle("d-none")
-          roomInput.classList.toggle("d-none")
-          takePicture()
-        }
-
-        getMessage()
-      }
-
-      const render = () => {
-        const room = window.location.pathname.split("/")[2]
-        if (!room) {
-          return renderSelection()
-        }
-        return renderRoom(room)
+        getUsers()
       }
 
       const takePicture = () => {
@@ -313,6 +205,7 @@
 
           fetch("/memechat/api/files", {
             method: "POST",
+            credentials: "include",
             headers: {
               "content-type": "application/json"
             },
@@ -322,7 +215,7 @@
             })
           }).then((r) => {
             videostream.getTracks().forEach((track) => track.stop())
-            r.status === 201 ? render() : location.reload()
+            r.status === 201 ? renderRoom() : location.reload()
           })
         })
       }
@@ -371,7 +264,7 @@
           credentials: "include"
         }).then((r) => {
           if (r.status !== 200) return setupLogin()
-          render()
+          renderRoom()
         })
       }
       startApp()
