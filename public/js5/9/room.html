@@ -143,6 +143,7 @@
           })
             .then((r) => r.json())
             .then((data) => {
+              if (Object.keys(data).length === 0) return setTimeout(getMemes, 1000);
               let counter = 0;
               const images = [];
 
