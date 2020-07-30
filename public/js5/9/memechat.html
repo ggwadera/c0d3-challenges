@@ -122,6 +122,7 @@
                 const tmp = $current
                 $current = $invisible
                 $invisible = tmp
+                setTimeout(getUsers, 1000)
               }
 
               const loadedCounter = () => {
@@ -134,11 +135,10 @@
                 const image = new Image()
                 image.addEventListener("load", loadedCounter, false)
                 image.src = `${img}?${Date.now()}`
-                image.classList.add('img-fluid', 'p-2')
+                image.classList.add("img-fluid", "p-2")
                 images.push(image)
                 return `${acc}<div class="col-md-4">${image.outerHTML}</div> `
               }, "")
-              setTimeout(getUsers, 1000)
             })
         }
 
