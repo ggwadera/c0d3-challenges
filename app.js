@@ -118,8 +118,12 @@ app.post('/webcam/files', (req, res) => {
 webcam.deleteOldFiles();
 
 // 9. MemeChat
-app.get('/memechat/:room?', (req, res) => {
-  res.sendFile(`${__dirname}/public/js5/9/memechat.html`);
+app.get('/memechat/', (req, res) => {
+  res.sendFile(`${__dirname}/public/js5/9/login.html`);
+});
+
+app.get('/memechat/room', (req, res) => {
+  res.sendFile(`${__dirname}/public/js5/9/room.html`);
 });
 
 app.get('/memechat/api/session', (req, res) => {
@@ -133,7 +137,7 @@ app.post('/memechat/api/session', (req, res) => {
   if (!req.session.username) {
     req.session.username = req.body.username;
   }
-  res.sendStatus(201);
+  res.status(201).redirect('/memechat/room');
 });
 
 app.get('/memechat/api/room/', (req, res) => {

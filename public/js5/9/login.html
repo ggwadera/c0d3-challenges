@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootswatch Darkly CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css"
+      integrity="sha384-Bo21yfmmZuXwcN/9vKrA5jPUMhr7znVBBeLxT9MA4r2BchhusfJ6+n8TLGUcRAtL"
+      crossorigin="anonymous"
+    />
+
+    <title>Memechat - Login</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        flex: 1 1 0;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      .form-signin {
+        width: 100%;
+        max-width: 330px;
+      }
+
+      .form-signin .form-control {
+        height: auto;
+        padding: 0.7em;
+        font-size: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/js4.html">JS4</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/js5.html">JS5 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.c0d3.com/">C0D3</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://chat.c0d3.com/">Chat</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main class="text-center h-100 d-flex align-items-center">
+      <form
+        id="form"
+        class="form-signin mx-auto px-3 d-none"
+        action="/memechat/api/session"
+        method="POST"
+        enctype="application/x-www-form-urlencoded"
+      >
+        <h1 style="color: #5440d8;">C0D3</h1>
+        <h4 class="mb-3 font-weight-normal">Choose an username</h4>
+        <label for="username" class="sr-only">Username</label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          class="form-control"
+          placeholder="Username"
+          required
+          autofocus
+        />
+        <button class="btn btn-lg btn-primary btn-block mt-2" type="submit">Submit</button>
+      </form>
+    </main>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      fetch('/memechat/api/session', {
+        credentials: 'include'
+      }).then((r) => {
+        if (r.status === 200) {
+          return window.location.replace('/memechat/room');
+        }
+        return document.getElementById('form').classList.remove('d-none')
+      });
+    </script>
+  </body>
+</html>

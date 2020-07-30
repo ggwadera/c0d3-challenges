@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootswatch Darkly CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/darkly/bootstrap.min.css"
+      integrity="sha384-Bo21yfmmZuXwcN/9vKrA5jPUMhr7znVBBeLxT9MA4r2BchhusfJ6+n8TLGUcRAtL"
+      crossorigin="anonymous"
+    />
+
+    <title>Memechat - Room</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+      }
+
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="https://github.com/ggwadera">@ggwadera</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarColor01"
+          aria-controls="navbarColor01"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarColor01">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="/index.html">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/js4.html">JS4</a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="/js5.html">JS5 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://www.c0d3.com/">C0D3</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="https://chat.c0d3.com/">Chat</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <main class="h-100 container-fluid mt-3">
+      <div class="row">
+        <div class="col-lg-9 col-sm-12">
+          <div class="row" id="memes1"></div>
+          <div class="row d-none" id="memes2"></div>
+        </div>
+        <div class="col-lg-3 col-sm-12">
+          <div class="row sticky-top">
+            <div class="col-12 mb-2">
+              <video id="video" class="img-fluid rounded"></video>
+            </div>
+            <div class="col-12 mb-2">
+              <label for="meme" class="sr-only">Type a text to appear in your picture</label>
+              <input type="text" class="form-control" id="meme" autofocus placeholder="Meme" />
+            </div>
+            <div class="col-12 mb-2">
+              <button id="button" type="submit" class="btn btn-primary btn-block">
+                Take Picture
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <canvas id="canvas" class="d-none"></canvas>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+      integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Redirect to login if session is invalid
+      fetch('/memechat/api/session', {
+        credentials: 'include'
+      }).then((r) => {
+        if (r.status !== 200) {
+          return window.location.replace('/memechat');
+        }
+        return startApp();
+      });
+
+      const startApp = () => {
+        let $current = document.getElementById('memes1');
+        let $invisible = document.getElementById('memes2');
+        const video = document.getElementById('video');
+        const meme = document.getElementById('meme');
+        const button = document.getElementById('button');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        navigator.mediaDevices
+          .getUserMedia({
+            video: true, // webcam
+            audio: false // microphone
+          })
+          .then((stream) => {
+            video.srcObject = stream;
+            video.play();
+          });
+
+        const getMemes = () => {
+          fetch('/memechat/api/room', {
+            credentials: 'include'
+          })
+            .then((r) => r.json())
+            .then((data) => {
+              let counter = 0;
+              const images = [];
+
+              const display = () => {
+                $current.classList.toggle('d-none');
+                $invisible.classList.toggle('d-none');
+                // swap the elements for the next update
+                const tmp = $current;
+                $current = $invisible;
+                $invisible = tmp;
+                setTimeout(getMemes, 1000);
+              };
+
+              const loadedCounter = () => {
+                counter += 1;
+                if (counter === images.length) {
+                  display();
+                }
+              };
+
+              $invisible.innerHTML = Object.values(data).reduce((acc, img) => {
+                const image = new Image();
+                image.addEventListener('load', loadedCounter, false);
+                image.src = `${img}?${Date.now()}`;
+                image.classList.add('card-img-top', 'rounded');
+                images.push(image);
+                return `${acc}
+                <div class="col-md-4">
+                  <div class="card mb-3">
+                    ${image.outerHTML}
+                  </div>
+                </div>
+              `;
+              }, '');
+            });
+        };
+
+        const sendMeme = () => {
+          if (meme.value.length === 0) return;
+          const width = video.clientWidth;
+          const height = video.clientHeight;
+          canvas.width = width;
+          canvas.height = height;
+          context.drawImage(video, 0, 0, width, height);
+
+          const pngData = canvas.toDataURL();
+          const base64Data = pngData.replace(/^data:image\/png;base64,/, '');
+
+          fetch('/memechat/api/files', {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+              img: base64Data,
+              meme: meme.value
+            })
+          }).then((r) => {
+            meme.value = '';
+          });
+        };
+
+        button.addEventListener('click', () => sendMeme());
+        meme.addEventListener('keyup', (e) => {
+          if (e.key === 'Enter') sendMeme();
+        });
+
+        getMemes();
+      };
+    </script>
+  </body>
+</html>
