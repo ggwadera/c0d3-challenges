@@ -22,6 +22,7 @@ app.use(session({
 })); // cookie
 app.use(express.static('public')); // generate static link to files in /public
 app.use(express.json({ limit: '10mb' })); // parse json body in the requests
+app.use(express.urlencoded({ extended: true }));
 utils.createFolder();
 utils.cleanFolder();
 
