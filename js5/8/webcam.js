@@ -7,15 +7,6 @@ const files = {};
 
 const dir = path.resolve('./public');
 
-// Create files folder if it not exists
-const createFolder = () => {
-  const exists = fs.existsSync(`${dir}/files`);
-  if (!exists) {
-    fs.mkdirSync(`${dir}/files`, { recursive: true });
-  }
-};
-createFolder();
-
 console.log(`${new Date().toString()} webcam: dir resolved to ${dir}`);
 
 /**

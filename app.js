@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const multer = require('multer');
 
+const utils = require('./utils');
 const geolocation = require('./js5/1/geolocation');
 const commands = require('./js5/2/commands');
 const memegen = require('./js5/3/memegen');
@@ -21,6 +22,8 @@ app.use(session({
 })); // cookie
 app.use(express.static('public')); // generate static link to files in /public
 app.use(express.json({ limit: '10mb' })); // parse json body in the requests
+utils.createFolder();
+utils.cleanFolder();
 
 // 1. IP GEOLOCATION
 app.get('/visitors', (req, res) => {
