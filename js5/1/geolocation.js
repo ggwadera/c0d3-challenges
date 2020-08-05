@@ -23,9 +23,9 @@ const renderPage = (req, res, body) => {
         </tr>
     `, '');
     let newHtml = html.replace('{cityStr}', body.cityStr);
-    newHtml = html.replace('{ip}', body.ip);
-    newHtml = html.replace('{visitors}', visitorsHtml);
-    newHtml = html.replace('{lat,lng}', `lat: ${body.ll[0]}, lng: ${body.ll[1]}`);
+    newHtml = newHtml.replace('{ip}', body.ip);
+    newHtml = newHtml.replace('{visitors}', visitorsHtml);
+    newHtml = newHtml.replace('{lat,lng}', `lat: ${body.ll[0]}, lng: ${body.ll[1]}`);
     res.send(newHtml);
   });
 };
