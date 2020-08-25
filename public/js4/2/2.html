@@ -33,6 +33,9 @@
   <script>
     const container = document.querySelector(".stars-container")
     const text = document.querySelector(".text")
+    let clicked = false
+
+    container.addEventListener('mouseenter', () => clicked = false)
 
     // Star class
     function Star(rating) {
@@ -45,20 +48,23 @@
 
       // add hover functionality to highlight the stars up to this one
       this.element.addEventListener("mouseenter", () => {
-        text.innerText = `You are giving ${this.rating} Stars!`
-        stars.forEach((star) => {
-          if (star.rating <= this.rating) {
-            star.element.classList.remove("far")
-            star.element.classList.add("fas")
-          } else {
-            star.element.classList.remove("fas")
-            star.element.classList.add("far")
-          }
-        })
+        if (!clicked) {
+          text.innerText = `You are giving ${this.rating} Stars!`
+          stars.forEach((star) => {
+            if (star.rating <= this.rating) {
+              star.element.classList.remove("far")
+              star.element.classList.add("fas")
+            } else {
+              star.element.classList.remove("fas")
+              star.element.classList.add("far")
+            }
+          })
+        }
       })
 
       // add click functionality to change the text below the stars
       this.element.addEventListener("click", () => {
+        clicked = true
         text.innerText = `You have given ${this.rating} Stars!`
       })
     }
