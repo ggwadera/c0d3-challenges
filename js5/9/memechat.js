@@ -1,5 +1,5 @@
 const path = require('path');
-const gm = require('gm').subClass({ imageMagick: true });
+const Jimp = require('jimp');
 
 const dir = path.resolve('./public/files');
 console.log(`${new Date().toString()} memechat: dir resolved to ${dir}`);
@@ -18,21 +18,27 @@ const getUsers = (req, res) => res.json(room);
  * @param {Request} req - Request object
  * @param {Response} res - Response object
  */
-const postImage = (req, res) => {
-  const img = Buffer.from(req.body.img, 'base64');
+const postImage = async (req, res) => {
+  const { img, meme } = req.body;
   const { username } = req.session;
-  return gm(img)
-    .fontSize(70)
-    .stroke('#ffffff')
-    .drawText(0, 200, req.body.meme)
-    .write(`${dir}/${username}.png`, (err) => {
-      if (err) {
-        console.error(err);
-        return res.sendStatus(500);
-      }
+  const buffer = Buffer.from(img, 'base64');
+  const font = await Jimp.loadFont(Jimp.FONT_SANS_32_WHITE);
+  return Jimp.read(buffer)
+    .then((image) => image
+      .resize(480, 480)
+      .print(font, 0, 0, {
+        text: meme,
+        alignmentX: Jimp.HORIZONTAL_ALIGN_CENTER,
+        alignmentY: Jimp.VERTICAL_ALIGN_BOTTOM,
+      }, 480)
+      .writeAsync(`${dir}/${username}.${image.getExtension()}`))
+    .then(() => {
       room[username] = `/files/${username}.png`;
-      console.log(`${new Date().toString()} memechat: new image from ${username}.png`);
       return res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.error(err);
+      return res.sendStatus(500);
     });
 };
 
